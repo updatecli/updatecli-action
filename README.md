@@ -20,7 +20,7 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Run once a day
-    - cron:  '0 0 * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   goreleaser:
