@@ -16,6 +16,7 @@ WARNING: Dont enable --debug mode in Github Action as it may leak information.
 name: updatecli
 
 on:
+  workflow_dispatch:
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Run once a day
