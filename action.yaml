@@ -1,0 +1,24 @@
+---
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: 'updatecli'
+description: 'https://github.com/updatecli/updatecli'
+branding:
+  icon: 'tag'
+  color: 'blue'
+inputs:
+  version:
+    description: 'Define updatecli version used'
+    required: false
+    default: latest
+  command:
+    description: 'Specify updatecli command'
+    required: false
+    default: apply
+  flags:
+    description: 'Specify updatecli command flags'
+    required: false
+    default: '--config ./updatecli/updatecli.d --values updatecli/values.yaml'
+runs:
+  using: 'docker'
+  image: "docker://ghcr.io/updatecli/updatecli:${{ inputs.version }}"
+  args: '${{ inputs.command }} ${{ inputs.flags }}'
