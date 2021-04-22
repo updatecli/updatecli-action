@@ -23,7 +23,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  goreleaser:
+  updatecli:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
