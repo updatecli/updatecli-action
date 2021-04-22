@@ -20,5 +20,5 @@ inputs:
     default: '--config ./updatecli/updatecli.d --values updatecli/values.yaml'
 runs:
   using: 'docker'
-  image: "docker://ghcr.io/updatecli/updatecli:${{ inputs.version }}"
-  args: '${{ inputs.command }} ${{ inputs.flags }}'
+  image: docker://ghcr.io/updatecli/updatecli:${{ inputs.version }}
+  args: ${{ inputs.command }} ${{ inputs.flags }}
