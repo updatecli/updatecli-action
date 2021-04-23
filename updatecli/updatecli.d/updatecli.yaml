@@ -33,10 +33,9 @@ targets:
         matcher: "UPDATECLI_VERSION"
     scm:
       github:
-        user: "{{ .github.user }}"
-        email: "{{ .github.email }}"
-        owner: "{{ .github.owner }}"
-        repository: "{{ .github.repository }}"
-        token: "{{ requiredEnv .github.token }}"
-        username: "{{ .github.username }}"
-        branch: "{{ .github.branch }}"
+        user: updatecli
+        email: me@olblak.com
+        owner: updatecli
+        repository: updatecli-action
+        token: "{{ requiredEnv UPDATECLI_GITHUB_TOKEN }}"
+        branch: main
