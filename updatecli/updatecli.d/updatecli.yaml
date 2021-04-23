@@ -7,16 +7,16 @@ sources:
     spec:
       owner: updatecli
       repository: updatecli
-      token: "{{ requiredEnv UPDATECLI_GITHUB_TOKEN }}"
+      token: {{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}
 conditions:
   dockerImage:
     name: Ensure that the image docker image tag is published
     kind: dockerImage
     spec:
-      image: "ghcr.io/updatecli/updatecli:latest"
+      image: "ghcr.io/updatecli/updatecli"
   dockerfile:
     name: "Test if ARG UPDATECLI_VERSION is set"
-    kind: dockerFile
+    kind: dockerfile
     spec:
       file: Dockerfile
       instruction:
@@ -37,5 +37,5 @@ targets:
         email: me@olblak.com
         owner: updatecli
         repository: updatecli-action
-        token: "{{ requiredEnv UPDATECLI_GITHUB_TOKEN }}"
+        token: {{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}
         branch: main
