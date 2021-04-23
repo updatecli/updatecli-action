@@ -1,5 +1,5 @@
 #!/bin/bash -l
-set -euo pipefail
+set -eo pipefail
 
 ARGS=""
 
