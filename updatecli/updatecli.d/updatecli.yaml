@@ -1,0 +1,42 @@
+---
+title: Bump updatecli version
+sources:
+  default:
+    name: Get latest updatecli version
+    kind: githubRelease
+    spec:
+      owner: updatecli
+      repository: updatecli
+      token: "{{ requiredEnv UPDATECLI_GITHUB_TOKEN }}"
+conditions:
+  dockerImage:
+    name: Ensure that the image docker image tag is published
+    kind: dockerImage
+    spec:
+      image: "ghcr.io/updatecli/updatecli:latest"
+  dockerfile:
+    name: "Test if ARG UPDATECLI_VERSION is set"
+    kind: dockerFile
+    spec:
+      file: Dockerfile
+      instruction:
+        keyword: "ARG"
+        matcher: "UPDATECLI_VERSION"
+targets:
+  dockerfile:
+    name: "Update the value of ARG UPDATECLI_VERSION in the Dockerfile"
+    kind: dockerfile
+    spec:
+      file: Dockerfile
+      instruction:
+        keyword: "ARG"
+        matcher: "UPDATECLI_VERSION"
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
