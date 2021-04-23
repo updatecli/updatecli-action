@@ -13,7 +13,7 @@ inputs:
   flags:
     description: 'Specify updatecli command flags'
     required: false
-    default: '--config ./updatecli/updatecli.d --values updatecli/values.yaml'
+    default: ''
 runs:
   using: 'docker'
   image: Dockerfile
