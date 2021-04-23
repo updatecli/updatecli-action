@@ -16,8 +16,7 @@ inputs:
     default: '--config ./updatecli/updatecli.d --values updatecli/values.yaml'
 runs:
   using: 'docker'
-  image: docker://ghcr.io/updatecli/updatecli
-  entrypoint: 'github-actions-entrypoint.bash'
+  image: Dockerfile
   env:
     UPDATECLI_COMMAND: ${{ inputs.command }}
     UPDATECLI_FLAGS: ${{ inputs.flags }}
