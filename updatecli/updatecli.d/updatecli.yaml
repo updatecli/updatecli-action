@@ -38,5 +38,6 @@ targets:
         email: me@olblak.com
         owner: updatecli
         repository: updatecli-action
+        username: github-actions
         token: {{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}
         branch: main
