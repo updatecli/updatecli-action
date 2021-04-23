@@ -6,10 +6,6 @@ branding:
   icon: 'fast-forward'
   color: 'purple'
 inputs:
-  version:
-    description: 'Define updatecli version used'
-    required: false
-    default: latest
   command:
     description: 'Specify updatecli command'
     required: false
@@ -20,7 +16,7 @@ inputs:
     default: '--config ./updatecli/updatecli.d --values updatecli/values.yaml'
 runs:
   using: 'docker'
-  image: docker://ghcr.io/updatecli/updatecli:${{ inputs.version }}
+  image: docker://ghcr.io/updatecli/updatecli
   entrypoint: 'github-actions-entrypoint.bash'
   env:
     UPDATECLI_COMMAND: ${{ inputs.command }}
