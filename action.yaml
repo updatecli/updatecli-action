@@ -3,8 +3,8 @@
 name: 'updatecli'
 description: 'https://github.com/updatecli/updatecli'
 branding:
-  icon: 'tag'
-  color: 'blue'
+  icon: 'fast-forward'
+  color: 'purple'
 inputs:
   version:
     description: 'Define updatecli version used'
@@ -21,4 +21,7 @@ inputs:
 runs:
   using: 'docker'
   image: docker://ghcr.io/updatecli/updatecli:${{ inputs.version }}
-  args: ${{ inputs.command }} ${{ inputs.flags }}
+  entrypoint: 'github-actions-entrypoint.bash'
+  env:
+    UPDATECLI_COMMAND: ${{ inputs.command }}
+    UPDATECLI_FLAGS: ${{ inputs.flags }}
