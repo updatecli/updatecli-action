@@ -21,6 +21,7 @@ jobs:
           command: diff
           flags: "--config ./updatecli/updatecli.d"
         env:
+          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Apply
@@ -29,4 +30,5 @@ jobs:
           command: apply
           flags: "--config ./updatecli/updatecli.d"
         env:
+          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
