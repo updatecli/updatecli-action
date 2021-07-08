@@ -1,4 +1,5 @@
-ARG UPDATECLI_VERSION=v0.4.0
+ARG UPDATECLI_VERSION=v0.5.0
+
 FROM ghcr.io/updatecli/updatecli:$UPDATECLI_VERSION
 
 COPY github-actions-entrypoint.bash /usr/local/bin/github-actions-entrypoint.bash 
