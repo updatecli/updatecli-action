@@ -14,7 +14,8 @@ conditions:
     kind: dockerImage
     spec:
       image: "ghcr.io/updatecli/updatecli"
-      token: {{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}
+      username: {{requiredEnv "GITHUB_AUTHOR"}}
+      token: {{requiredEnv "GITHUB_TOKEN"}}
   dockerfile:
     name: "Test if ARG UPDATECLI_VERSION is set"
     kind: dockerfile
