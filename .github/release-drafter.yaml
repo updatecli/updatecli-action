@@ -23,3 +23,19 @@ template: |
   ## Contributors
 
   $CONTRIBUTORS
+
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+      - 'dependencies'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
+exclude-labels:
+  - 'skip-changelog'
+prerelease: true
