@@ -22,6 +22,10 @@ on:
     # Run once a day
     - cron: '0 0 * * *'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   updatecli:
     runs-on: ubuntu-latest
