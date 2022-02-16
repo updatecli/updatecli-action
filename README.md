@@ -5,7 +5,7 @@
 
 Updatecli is an automation engine that allows you to define custom update pipelines.
 
-Documentation is available on [updatecli/docs/automate/github_action](https://www.updatecli.io/docs/automate/github_action/)
+A Quick-start is available on [www.updatecli.io/docs/prologue/quick-start](https://www.updatecli.io/docs/prologue/quick-start/)
 
 ## Usage
 
