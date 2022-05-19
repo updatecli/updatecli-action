@@ -33,15 +33,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Diff
-        uses: updatecli/updatecli-action@v1
+      - name: Install Updatecli in local cache
+        uses: updatecli/updatecli-action@v2
         with:
-          command: diff
+          install-only: true
+
+      - name: Diff
+        uses: updatecli/updatecli-action@v2
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Apply
-        uses: updatecli/updatecli-action@v1
+        uses: updatecli/updatecli-action@v2
+        with:
+          arg: apply --config updatecli/updatecli.d
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
