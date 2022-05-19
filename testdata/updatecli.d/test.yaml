@@ -1,0 +1,13 @@
+# Basic updatecli manifest to test that the GitHub Action works
+
+name: "Test updatecli workflow"
+conditions:
+    default: 
+      name: "Test File"
+      kind: "yaml"
+      spec:
+        file: testdata/updatecli.d/test.yaml
+        key: "name"
+        value: "Test updatecli workflow"
+
+

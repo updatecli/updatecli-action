@@ -1,0 +1,35 @@
+---
+name: Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  # unit tests
+  units:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: npm ci
+    - run: npm test
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+
+      #- name: Lint
+      #  run: npm run lint
+
+      - name: Test local action with install-only
+        uses: ./
+        with:
+          install-only: true
+
+
+      - name: Test local action without install-only
+        uses: ./
+        with:
+          arg: "diff --config testdata/updatecli.d/test.yaml"

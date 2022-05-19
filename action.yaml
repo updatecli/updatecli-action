@@ -1,22 +1,26 @@
 ---
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
-name: 'updatecli'
-description: 'https://github.com/updatecli/updatecli'
+name: 'Updatecli Action'
+description: 'GitHub Action for Updatecli, a GitDevOps Automation engine.'
+author: 'Updatecli'
 branding:
   icon: 'fast-forward'
   color: 'purple'
+
 inputs:
-  command:
-    description: 'Specify updatecli command'
+  arg:
+    description: 'Arguments to pass to Updatecli'
     required: false
-    default: apply
-  flags:
-    description: 'Specify updatecli command flags'
+    default: diff
+  version:
+    description: 'Specify updatecli version to use'
     required: false
-    default: ''
+    default: "v0.25.0"
+  install-only:
+    description: 'Install Updatecli'
+    default: false
+    required: false
+
 runs:
-  using: 'docker'
-  image: Dockerfile
-  env:
-    UPDATECLI_COMMAND: ${{ inputs.command }}
-    UPDATECLI_FLAGS: ${{ inputs.flags }}
+  using: 'node16'
+  main: 'dist/index.js'
