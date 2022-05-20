@@ -12,9 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Lint
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Lint Test
       run: npm run lint
+
     - run: npm ci
+
     # No test 
     # - run: npm test
   test:
