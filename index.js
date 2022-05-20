@@ -1,6 +1,5 @@
 const core = require('@actions/core');
 const tool = require('@actions/tool-cache')
-const io = require('@actions/io')
 const exec = require('@actions/exec')
 const path = require('path')
 
@@ -68,7 +67,6 @@ async function updatecliDownload(){
           await exec.exec("chmod", ["+x", path.join(cachedPath,"updatecli")]);
           core.addPath(cachedPath);
 
-          const updatecliPath = await io.which('updatecli', true);
           core.info(`Downloaded to ${cachedPath}`);
 
         } else if (updatecliPackage.platform == "linux"){

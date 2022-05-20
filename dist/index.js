@@ -5961,7 +5961,6 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(186);
 const tool = __nccwpck_require__(784)
-const io = __nccwpck_require__(436)
 const exec = __nccwpck_require__(514)
 const path = __nccwpck_require__(17)
 
@@ -6029,7 +6028,6 @@ async function updatecliDownload(){
           await exec.exec("chmod", ["+x", path.join(cachedPath,"updatecli")]);
           core.addPath(cachedPath);
 
-          const updatecliPath = await io.which('updatecli', true);
           core.info(`Downloaded to ${cachedPath}`);
 
         } else if (updatecliPackage.platform == "linux"){
