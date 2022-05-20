@@ -6004,9 +6004,9 @@ async function updatecliDownload(){
   try {
     for (let i = 0; i < updatecliPackages.length; i++) {
       let updatecliPackage = updatecliPackages[i]
-      
+
       if (process.platform == updatecliPackage.platform && process.arch == updatecliPackage.arch) {
-        
+
         const downloadPath = await tool.downloadTool(updatecliPackage.url);
 
         core.info(`Downloading ${updatecliPackage.url}`)
@@ -6068,6 +6068,8 @@ async function run() {
 }
 
 run()
+
+
 })();
 
 module.exports = __webpack_exports__;
