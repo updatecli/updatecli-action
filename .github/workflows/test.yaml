@@ -21,21 +21,15 @@ jobs:
 
     - run: npm ci
 
-    # No test 
-    # - run: npm test
-  test:
+  e2e:
     name: Test Updatecli Github Action
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
         uses: actions/checkout@v3
 
-      - name: Test local action with install-only
+      - name: Install Updatecli
         uses: ./
-        with:
-          install-only: true
 
       - name: Test local action without install-only
-        uses: ./
-        with:
-          arg: "diff --config testdata/updatecli.d/test.yaml"
+        run: updatecli diff --config testdata/updatecli.d/test.yaml

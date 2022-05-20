@@ -5965,9 +5965,6 @@ const exec = __nccwpck_require__(514)
 const path = __nccwpck_require__(17)
 
 const version = core.getInput('version');
-const arg = core.getInput('arg');
-const installOnly = core.getBooleanInput('install-only')
-
 
 // download Updatecli retrieve updatecli binary from Github Release
 async function updatecliDownload(){
@@ -6035,7 +6032,7 @@ async function updatecliDownload(){
 
           core.debug(`Extracting file to ${updatecliExtractedFolder} ...`);
 
-          core.info('Adding to the cache ...');
+          core.debug('Adding to the cache ...');
           const cachedPath = await tool.cacheDir(updatecliExtractedFolder, 'updatecli', version, process.arch);
           core.addPath(cachedPath);
 
@@ -6062,31 +6059,13 @@ async function updatecliVersion(){
   }
 }
 
-async function updatecliRun(){
-  try {
-    core.info("Run Updatecli")
-    const updatecliDirectory = tool.find('updatecli', version, process.arch);
-    core.addPath(updatecliDirectory);
-    await exec.exec(`updatecli ${arg}`);
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
 async function run() {
 
-  if (installOnly) {
-    await updatecliDownload()
-    await updatecliVersion();
-    process.exit(0)
-  }
-
+  await updatecliDownload()
   await updatecliVersion();
-  await updatecliRun();
+  process.exit(0)
 
-  process.exit(0);
 }
-
 
 run()
 })();

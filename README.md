@@ -6,11 +6,13 @@
 
 ## Usage
 
-Run updatecli from GitHub Action
+Install Updatecli for GitHub Action
+
+**Options**
+
+`version`: Specify the Updatecli version to install. Accepted values are any valid releases such as v0.25.0
 
 ### Workflow
-
-WARNING: Dont enable --debug mode in Github Action as it may leak information.
 
 ```yaml
 name: updatecli
@@ -33,24 +35,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install Updatecli in local cache
+      - name: Install Updatecli in the runner
         uses: updatecli/updatecli-action@v2
-        with:
-          install-only: true
 
-      - name: Diff
-        uses: updatecli/updatecli-action@v2
+      - name: Run Updatecli in Dry Run mode
+        run: updatecli diff
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Apply
-        uses: updatecli/updatecli-action@v2
-        with:
-          arg: apply --config updatecli/updatecli.d
+      - name: Run Updatecli in Apply mode
+        run: apply --config updatecli/updatecli.d
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+WARNING: Dont enable --debug mode in Github Action as it may leak information.
+
 ## License
 
 MIT. See `LICENSE` for more details.
+
