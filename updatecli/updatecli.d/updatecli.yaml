@@ -1,60 +1,43 @@
-title: Bump updatecli version
+title: "Bump updatecli version"
 
 scms:
   default:
-    kind: github
+    kind: "github"
     spec:
-      user: updatecli
-      email: me@olblak.com
-      owner: updatecli
-      repository: updatecli-action
-      username: github-actions
-      token: {{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}
-      branch: main
+      user: "updatecli"
+      email: "me@olblak.com"
+      owner: "updatecli"
+      repository: "updatecli-action"
+      username: "github-actions"
+      token: '{{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}'
+      branch: "v2"
 
 sources:
-  lastVersion:
-    name: Get latest updatecli version
-    kind: githubRelease
+  updatecli:
+    name: "Get latest updatecli version"
+    kind: "githubrelease"
     spec:
-      owner: updatecli
-      repository: updatecli
-      token: {{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}
-
-conditions:
-  dockerImage:
-    name: Ensure that the image docker image tag is published
-    kind: dockerImage
-    spec:
-      image: "ghcr.io/updatecli/updatecli"
-      architecture: amd64
-  dockerfile:
-    name: "Test if ARG UPDATECLI_VERSION is set"
-    kind: dockerfile
-    spec:
-      file: Dockerfile
-      instruction:
-        keyword: "ARG"
-        matcher: "UPDATECLI_VERSION"
+      owner: "updatecli"
+      repository: "updatecli"
+      token: '{{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}'
 
 targets:
-  dockerfile:
-    name: "Update the value of ARG UPDATECLI_VERSION in the Dockerfile"
-    kind: dockerfile
+  action:
+    name: "Bump updatecli version in action.yaml"
+    kind: yaml
+    scmid: default
+    sourceid: updatecli
     spec:
-      file: Dockerfile
-      instruction:
-        keyword: "ARG"
-        matcher: "UPDATECLI_VERSION"
-    scmID: default
+      file: "action.yaml"
+      key: "inputs.version.default"
 
 pullrequests:
   default:
     kind: github
-    title: 'Bump updatecli version to {{ source "lastVersion" }}'
-    scmID: default
+    title: 'Bump updatecli version to {{ source "updatecli" }}'
+    scmid: default
     targets:
-      - dockerfile
+      - action
     spec:
       labels:
         - dependencies

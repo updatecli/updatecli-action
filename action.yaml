@@ -1,26 +1,19 @@
 ---
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
-name: 'Updatecli Action'
-description: 'GitHub Action for Updatecli, a GitDevOps Automation engine.'
+name: 'Updatecli Installer'
+description: 'Install a specific Updatecli version'
 author: 'Updatecli'
 branding:
   icon: 'fast-forward'
   color: 'purple'
 
 inputs:
-  arg:
-    description: 'Arguments to pass to Updatecli'
-    required: false
-    default: diff
   version:
-    description: 'Specify updatecli version to use'
+    description: 'Specify Updatecli version to use. Accepted values are any Updatecli version'
     required: false
     default: "v0.25.0"
-  install-only:
-    description: 'Install Updatecli'
-    default: false
-    required: false
 
 runs:
   using: 'node16'
   main: 'dist/index.js'
+
