@@ -1,4 +1,3 @@
----
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 name: 'Updatecli Installer'
 description: 'Install a specific Updatecli version'
@@ -6,14 +5,11 @@ author: 'Updatecli'
 branding:
   icon: 'fast-forward'
   color: 'purple'
-
 inputs:
   version:
     description: 'Specify Updatecli version to use. Accepted values are any Updatecli version'
     required: false
-    default: "v0.25.0"
-
+    default: "v0.26.0"
 runs:
   using: 'node16'
   main: 'dist/index.js'
-
