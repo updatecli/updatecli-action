@@ -22,20 +22,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Diff
-        uses: updatecli/updatecli-action@v1.22.0
-        with:
-          command: diff
-          flags: "--config ./updatecli/updatecli.d"
+      - name: "Setup updatecli"
+        uses: "updatecli/updatecli-action@v2.1.0"
+
+      - name: "Run updatecli in dryrun"
+        run: "updatecli diff --config ./updatecli/updatecli.d"
         env:
           UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Apply
-        uses: updatecli/updatecli-action@v1.22.0
-        with:
-          command: apply
-          flags: "--config ./updatecli/updatecli.d"
+      - name: "Run updatecli"
+        run: "updatecli apply --config ./updatecli/updatecli.d"
         env:
-          UPDATECLI_GITHUB_ACTOR: ${{ secrets.UPDATECLI_BOT_GITHUB_ACTOR }}
-          UPDATECLI_GITHUB_TOKEN: ${{ secrets.UPDATECLI_BOT_GITHUB_TOKEN }}
+          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
