@@ -44,7 +44,7 @@ jobs:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Updatecli in Apply mode
-        run: apply --config updatecli/updatecli.d
+        run: updatecli apply --config updatecli/updatecli.d
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
