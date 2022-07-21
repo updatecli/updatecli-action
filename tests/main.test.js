@@ -77,69 +77,53 @@ describe('main', () => {
     process.env['PATH'] = path
   })
 
-  describe('linux', () => {
-    beforeEach(() => {
-      fakePlatformArch('linux', 'x64')
-    })
-    it('should download', async () => {
-      await updatecliDownload()
-      const file = path.join(
-        cachePath,
-        'updatecli',
-        versionWithoutV,
-        process.arch,
-        'updatecli'
-      )
-      const fileStat = await fs.stat(file)
-      expect(fileStat.isFile()).toBe(true)
-    })
-    afterEach(() => {
-      restorePlatformArch()
-    })
+  it('linux should download', async () => {
+    fakePlatformArch('linux', 'x64')
+    await updatecliDownload()
+    const file = path.join(
+      cachePath,
+      'updatecli',
+      versionWithoutV,
+      process.arch,
+      'updatecli'
+    )
+    const fileStat = await fs.stat(file)
+    expect(fileStat.isFile()).toBe(true)
+    restorePlatformArch()
   })
-  describe('windows', () => {
-    beforeEach(() => {
-      fakePlatformArch('win32', 'x64')
-    })
-    it('should download', async () => {
-      await updatecliDownload()
-      const file = path.join(
-        cachePath,
-        'updatecli',
-        versionWithoutV,
-        process.arch,
-        'updatecli.exe'
-      )
-      const fileStat = await fs.stat(file)
-      expect(fileStat.isFile()).toBe(true)
-    })
-    afterEach(() => {
-      restorePlatformArch()
-    })
+
+  it('windows should download', async () => {
+    fakePlatformArch('win32', 'x64')
+    await updatecliDownload()
+    const file = path.join(
+      cachePath,
+      'updatecli',
+      versionWithoutV,
+      process.arch,
+      'updatecli.exe'
+    )
+    const fileStat = await fs.stat(file)
+    expect(fileStat.isFile()).toBe(true)
+    restorePlatformArch()
   })
-  describe('darwin', () => {
-    beforeEach(() => {
-      fakePlatformArch('darwin', 'x64')
-    })
-    it('should download', async () => {
-      await updatecliDownload()
-      const file = path.join(
-        cachePath,
-        'updatecli',
-        versionWithoutV,
-        process.arch,
-        'updatecli'
-      )
-      const fileStat = await fs.stat(file)
-      expect(fileStat.isFile()).toBe(true)
-    })
-    afterEach(() => {
-      restorePlatformArch()
-    })
+
+  it('darwin should download', async () => {
+    fakePlatformArch('darwin', 'x64')
+    await updatecliDownload()
+    const file = path.join(
+      cachePath,
+      'updatecli',
+      versionWithoutV,
+      process.arch,
+      'updatecli'
+    )
+    const fileStat = await fs.stat(file)
+    expect(fileStat.isFile()).toBe(true)
+    restorePlatformArch()
   })
 })
 
-// afterAll(async () => {
-//   await fs.rm(temporaryPath, {recursive: true})
-//   await fs.rm(cachePath, {recursive: true})
-// })
+afterAll(async () => {
+  await fs.rm(temporaryPath, {recursive: true})
+  await fs.rm(cachePath, {recursive: true})
+})
