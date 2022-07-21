@@ -57,7 +57,7 @@ async function updatecliDownload() {
     const arch = process.arch
 
     const updatecliPackage = updatecliPackages.find(
-      x => x.platform === platform && x.arch === arch
+      x => x.platform == platform && x.arch == arch
     )
     if (!updatecliPackage) {
       throw new Error(`Unsupported platform ${platform} and arch ${arch}`)
