@@ -95,6 +95,7 @@ export async function run() {
   try {
     await updatecliDownload()
     await updatecliVersion()
+    process.exitCode = core.ExitCode.Success
   } catch (error) {
     core.setFailed(error.message)
   }
