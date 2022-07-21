@@ -74,8 +74,7 @@ async function updatecliDownload() {
     const cachedPath = await tool.cacheDir(
       updatecliExtractedFolder,
       'updatecli',
-      version,
-      platform == 'linux' ? arch : undefined
+      version
     )
 
     if (platform == 'linux' || platform == 'darwin') {
@@ -91,7 +90,7 @@ async function updatecliDownload() {
 async function updatecliVersion() {
   try {
     core.info('Show Updatecli version')
-    const updatecliDirectory = tool.find('updatecli', version, process.arch)
+    const updatecliDirectory = tool.find('updatecli', version)
     core.addPath(updatecliDirectory)
     await exec.exec('updatecli version')
   } catch (error) {
