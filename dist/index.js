@@ -5909,11 +5909,11 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 const version = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('version')
 
 async function extractUpdatecli(downloadPath) {
-  if (process.platform == 'win32') {
+  if (process.platform == 'linux') {
     return _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(downloadPath)
-  } else if (process.platform == 'darwin') {
+  } else if (process.platform == 'win32') {
     return _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractXar(downloadPath)
-  } else if (process.platform == 'linux') {
+  } else if (process.platform == 'darwin') {
     return _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(downloadPath)
   } else {
     throw new Error(`Unsupported platform: ${process.platform}`)
@@ -5923,6 +5923,16 @@ async function extractUpdatecli(downloadPath) {
 // download Updatecli retrieve updatecli binary from Github Release
 async function updatecliDownload() {
   const updatecliPackages = [
+    {
+      arch: 'x64',
+      platform: 'linux',
+      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_x86_64.tar.gz`,
+    },
+    {
+      arch: 'arm64',
+      platform: 'linux',
+      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_arm64.tar.gz`,
+    },
     {
       arch: 'x64',
       platform: 'win32',
@@ -5943,27 +5953,16 @@ async function updatecliDownload() {
       platform: 'darwin',
       url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Darwin_arm64.tar.gz`,
     },
-    {
-      arch: 'x64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_x86_64.tar.gz`,
-    },
-    {
-      arch: 'arm64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_arm64.tar.gz`,
-    },
   ]
 
   try {
-    const platform = process.platform
-    const arch = process.arch
-
     const updatecliPackage = updatecliPackages.find(
-      x => x.platform === platform && x.arch === arch
+      x => x.platform == process.platform && x.arch == process.arch
     )
     if (!updatecliPackage) {
-      throw new Error(`Unsupported platform ${platform} and arch ${arch}`)
+      throw new Error(
+        `Unsupported platform ${process.platform} and arch ${process.arch}`
+      )
     }
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Downloading ${updatecliPackage.url}`)
@@ -5977,13 +5976,14 @@ async function updatecliDownload() {
     const cachedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(
       updatecliExtractedFolder,
       'updatecli',
-      version,
-      platform == 'linux' ? arch : undefined
+      version
     )
 
-    if (platform == 'linux' || platform == 'darwin') {
+    if (process.platform == 'linux' || process.platform == 'darwin') {
       await _actions_exec__WEBPACK_IMPORTED_MODULE_2__.exec('chmod', ['+x', node_path__WEBPACK_IMPORTED_MODULE_3__.join(cachedPath, 'updatecli')])
     }
+
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(cachedPath)
 
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Downloaded to ${cachedPath}`)
   } catch (error) {
@@ -5994,8 +5994,6 @@ async function updatecliDownload() {
 async function updatecliVersion() {
   try {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('Show Updatecli version')
-    const updatecliDirectory = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('updatecli', version, process.arch)
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(updatecliDirectory)
     await _actions_exec__WEBPACK_IMPORTED_MODULE_2__.exec('updatecli version')
   } catch (error) {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message)
