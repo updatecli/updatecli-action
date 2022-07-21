@@ -1,17 +1,17 @@
-const core = require('@actions/core')
-const tool = require('@actions/tool-cache')
-const exec = require('@actions/exec')
-const path = require('path')
+import core from '@actions/core'
+import tool from '@actions/tool-cache'
+import exec from '@actions/exec'
+import path from 'node:path'
 
 const version = core.getInput('version')
 
 async function extractUpdatecli(downloadPath) {
   if (process.platform == 'win32') {
-    return tool.extractZip(downloadPath, undefined)
+    return tool.extractZip(downloadPath)
   } else if (process.platform == 'darwin') {
-    return tool.extractXar(downloadPath, undefined)
+    return tool.extractXar(downloadPath)
   } else if (process.platform == 'linux') {
-    return tool.extractTar(downloadPath, undefined)
+    return tool.extractTar(downloadPath)
   } else {
     throw new Error(`Unsupported platform: ${process.platform}`)
   }
@@ -102,7 +102,6 @@ async function updatecliVersion() {
 async function run() {
   await updatecliDownload()
   await updatecliVersion()
-  process.exit(0)
 }
 
-run()
+await run()

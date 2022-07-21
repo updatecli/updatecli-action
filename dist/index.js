@@ -1,10 +1,9 @@
-require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
+import './sourcemap-register.cjs';import { createRequire as __WEBPACK_EXTERNAL_createRequire } from "module";
+/******/ var __webpack_modules__ = ({
 
 /***/ 351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -103,7 +102,6 @@ function escapeProperty(s) {
 /***/ 186:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -432,7 +430,6 @@ Object.defineProperty(exports, "markdownSummary", ({ enumerable: true, get: func
 /***/ 717:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 // For internal use, subject to change.
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -481,7 +478,6 @@ exports.issueCommand = issueCommand;
 /***/ 41:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -565,7 +561,6 @@ exports.OidcClient = OidcClient;
 /***/ 327:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -855,7 +850,6 @@ exports.summary = _summary;
 /***/ 278:
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -902,7 +896,6 @@ exports.toCommandProperties = toCommandProperties;
 /***/ 514:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -1012,7 +1005,6 @@ exports.getExecOutput = getExecOutput;
 /***/ 159:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -1637,7 +1629,6 @@ class ExecState extends events.EventEmitter {
 /***/ 526:
 /***/ (function(__unused_webpack_module, exports) {
 
-"use strict";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1725,7 +1716,6 @@ exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHand
 /***/ 255:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -2337,7 +2327,6 @@ const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => ((c[k.toLowerCa
 /***/ 835:
 /***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.checkBypass = exports.getProxyUrl = void 0;
@@ -2405,7 +2394,6 @@ exports.checkBypass = checkBypass;
 /***/ 962:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -2589,7 +2577,6 @@ exports.getCmdPath = getCmdPath;
 /***/ 436:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -2937,7 +2924,6 @@ function copyFile(srcFile, destFile, force) {
 /***/ 473:
 /***/ (function(module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -3072,7 +3058,6 @@ exports._readLinuxVersionFile = _readLinuxVersionFile;
 /***/ 279:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -3162,7 +3147,6 @@ exports.RetryHelper = RetryHelper;
 /***/ 784:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-"use strict";
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -5445,7 +5429,6 @@ module.exports = __nccwpck_require__(219);
 /***/ 219:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
-"use strict";
 
 
 var net = __nccwpck_require__(808);
@@ -5801,173 +5784,144 @@ module.exports = v4;
 /***/ 491:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("assert");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("assert");
 
 /***/ }),
 
 /***/ 81:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("child_process");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("child_process");
 
 /***/ }),
 
 /***/ 113:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("crypto");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("crypto");
 
 /***/ }),
 
 /***/ 361:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("events");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("events");
 
 /***/ }),
 
 /***/ 147:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("fs");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("fs");
 
 /***/ }),
 
 /***/ 685:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("http");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("http");
 
 /***/ }),
 
 /***/ 687:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("https");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("https");
 
 /***/ }),
 
 /***/ 808:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("net");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("net");
+
+/***/ }),
+
+/***/ 411:
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 
 /***/ }),
 
 /***/ 37:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("os");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
 
 /***/ }),
 
 /***/ 17:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("path");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("path");
 
 /***/ }),
 
 /***/ 781:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("stream");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("stream");
 
 /***/ }),
 
 /***/ 576:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("string_decoder");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("string_decoder");
 
 /***/ }),
 
 /***/ 512:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("timers");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("timers");
 
 /***/ }),
 
 /***/ 404:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("tls");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("tls");
 
 /***/ }),
 
 /***/ 837:
 /***/ ((module) => {
 
-"use strict";
-module.exports = require("util");
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("util");
 
-/***/ })
+/***/ }),
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __nccwpck_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		var threw = true;
-/******/ 		try {
-/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require__);
-/******/ 			threw = false;
-/******/ 		} finally {
-/******/ 			if(threw) delete __webpack_module_cache__[moduleId];
-/******/ 		}
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
-/************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-const core = __nccwpck_require__(186);
-const tool = __nccwpck_require__(784)
-const exec = __nccwpck_require__(514)
-const path = __nccwpck_require__(17)
+/***/ 378:
+/***/ ((__webpack_module__, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
 
-const version = core.getInput('version');
+__nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__) => {
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(186);
+/* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(784);
+/* harmony import */ var _actions_exec__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(514);
+/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(411);
+
+
+
+
+
+const version = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('version')
+
+async function extractUpdatecli(downloadPath) {
+  if (process.platform == 'win32') {
+    return _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(downloadPath)
+  } else if (process.platform == 'darwin') {
+    return _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractXar(downloadPath)
+  } else if (process.platform == 'linux') {
+    return _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(downloadPath)
+  } else {
+    throw new Error(`Unsupported platform: ${process.platform}`)
+  }
+}
 
 // download Updatecli retrieve updatecli binary from Github Release
-async function updatecliDownload(){
+async function updatecliDownload() {
   const updatecliPackages = [
     {
       arch: 'x64',
@@ -6002,77 +5956,182 @@ async function updatecliDownload(){
   ]
 
   try {
-    for (let i = 0; i < updatecliPackages.length; i++) {
-      let updatecliPackage = updatecliPackages[i]
+    const platform = process.platform
+    const arch = process.arch
 
-      if (process.platform == updatecliPackage.platform && process.arch == updatecliPackage.arch) {
-
-        const downloadPath = await tool.downloadTool(updatecliPackage.url);
-
-        core.info(`Downloading ${updatecliPackage.url}`)
-        if (updatecliPackage.platform == "win32" ) {
-          const updatecliExtractedFolder = await tool.extractZip(downloadPath, undefined);
-          const cachedPath = await tool.cacheDir(updatecliExtractedFolder, 'updatecli', version);
-          core.addPath(cachedPath);
-          core.debug(`Downloaded to ${cachedPath}`);
-
-        } else if (updatecliPackage.platform == "darwin") {
-          const updatecliExtractedFolder = await tool.extractXar(downloadPath, undefined);
-          core.debug(`Extracting file to ${updatecliExtractedFolder} ...`);
-
-          core.info('Adding to the cache ...');
-          const cachedPath = await tool.cacheDir(updatecliExtractedFolder, 'updatecli', version);
-          await exec.exec("chmod", ["+x", path.join(cachedPath,"updatecli")]);
-          core.addPath(cachedPath);
-
-          core.info(`Downloaded to ${cachedPath}`);
-
-        } else if (updatecliPackage.platform == "linux"){
-          const updatecliExtractedFolder = await tool.extractTar(downloadPath, undefined);
-
-          core.debug(`Extracting file to ${updatecliExtractedFolder} ...`);
-
-          core.debug('Adding to the cache ...');
-          const cachedPath = await tool.cacheDir(updatecliExtractedFolder, 'updatecli', version, process.arch);
-          core.addPath(cachedPath);
-
-          await exec.exec("chmod", ["+x", path.join(cachedPath,"updatecli")]);
-          core.info(`Downloaded to ${cachedPath}`);
-        }
-      }
+    const updatecliPackage = updatecliPackages.find(
+      x => x.platform === platform && x.arch === arch
+    )
+    if (!updatecliPackage) {
+      throw new Error(`Unsupported platform ${platform} and arch ${arch}`)
     }
 
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Downloading ${updatecliPackage.url}`)
+    const downloadPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(updatecliPackage.url)
 
-  }catch(error)  {
-    core.setFailed(error.message);
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Extracting file ${downloadPath} ...`)
+    const updatecliExtractedFolder = await extractUpdatecli(downloadPath)
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Extracted file to ${updatecliExtractedFolder} ...`)
+
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug('Adding to the cache ...')
+    const cachedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(
+      updatecliExtractedFolder,
+      'updatecli',
+      version,
+      platform == 'linux' ? arch : undefined
+    )
+
+    if (platform == 'linux' || platform == 'darwin') {
+      await _actions_exec__WEBPACK_IMPORTED_MODULE_2__.exec('chmod', ['+x', node_path__WEBPACK_IMPORTED_MODULE_3__.join(cachedPath, 'updatecli')])
+    }
+
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Downloaded to ${cachedPath}`)
+  } catch (error) {
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message)
   }
 }
 
-async function updatecliVersion(){
+async function updatecliVersion() {
   try {
-    core.info("Show Updatecli version")
-    const updatecliDirectory = tool.find('updatecli', version, process.arch);
-    core.addPath(updatecliDirectory);
-    await exec.exec("updatecli version");
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('Show Updatecli version')
+    const updatecliDirectory = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('updatecli', version, process.arch)
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(updatecliDirectory)
+    await _actions_exec__WEBPACK_IMPORTED_MODULE_2__.exec('updatecli version')
   } catch (error) {
-    core.setFailed(error.message);
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed(error.message)
   }
 }
 
 async function run() {
-
   await updatecliDownload()
-  await updatecliVersion();
-  process.exit(0)
-
+  await updatecliVersion()
 }
 
-run()
+await run()
 
+__webpack_handle_async_dependencies__();
+}, 1);
 
-})();
+/***/ })
 
-module.exports = __webpack_exports__;
-/******/ })()
-;
+/******/ });
+/************************************************************************/
+/******/ // The module cache
+/******/ var __webpack_module_cache__ = {};
+/******/ 
+/******/ // The require function
+/******/ function __nccwpck_require__(moduleId) {
+/******/ 	// Check if module is in cache
+/******/ 	var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 	if (cachedModule !== undefined) {
+/******/ 		return cachedModule.exports;
+/******/ 	}
+/******/ 	// Create a new module (and put it into the cache)
+/******/ 	var module = __webpack_module_cache__[moduleId] = {
+/******/ 		// no module.id needed
+/******/ 		// no module.loaded needed
+/******/ 		exports: {}
+/******/ 	};
+/******/ 
+/******/ 	// Execute the module function
+/******/ 	var threw = true;
+/******/ 	try {
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require__);
+/******/ 		threw = false;
+/******/ 	} finally {
+/******/ 		if(threw) delete __webpack_module_cache__[moduleId];
+/******/ 	}
+/******/ 
+/******/ 	// Return the exports of the module
+/******/ 	return module.exports;
+/******/ }
+/******/ 
+/************************************************************************/
+/******/ /* webpack/runtime/async module */
+/******/ (() => {
+/******/ 	var webpackThen = typeof Symbol === "function" ? Symbol("webpack then") : "__webpack_then__";
+/******/ 	var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 	var completeQueue = (queue) => {
+/******/ 		if(queue) {
+/******/ 			queue.forEach((fn) => (fn.r--));
+/******/ 			queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 		}
+/******/ 	}
+/******/ 	var completeFunction = (fn) => (!--fn.r && fn());
+/******/ 	var queueFunction = (queue, fn) => (queue ? queue.push(fn) : completeFunction(fn));
+/******/ 	var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 		if(dep !== null && typeof dep === "object") {
+/******/ 			if(dep[webpackThen]) return dep;
+/******/ 			if(dep.then) {
+/******/ 				var queue = [];
+/******/ 				dep.then((r) => {
+/******/ 					obj[webpackExports] = r;
+/******/ 					completeQueue(queue);
+/******/ 					queue = 0;
+/******/ 				});
+/******/ 				var obj = {};
+/******/ 											obj[webpackThen] = (fn, reject) => (queueFunction(queue, fn), dep['catch'](reject));
+/******/ 				return obj;
+/******/ 			}
+/******/ 		}
+/******/ 		var ret = {};
+/******/ 							ret[webpackThen] = (fn) => (completeFunction(fn));
+/******/ 							ret[webpackExports] = dep;
+/******/ 							return ret;
+/******/ 	}));
+/******/ 	__nccwpck_require__.a = (module, body, hasAwait) => {
+/******/ 		var queue = hasAwait && [];
+/******/ 		var exports = module.exports;
+/******/ 		var currentDeps;
+/******/ 		var outerResolve;
+/******/ 		var reject;
+/******/ 		var isEvaluating = true;
+/******/ 		var nested = false;
+/******/ 		var whenAll = (deps, onResolve, onReject) => {
+/******/ 			if (nested) return;
+/******/ 			nested = true;
+/******/ 			onResolve.r += deps.length;
+/******/ 			deps.map((dep, i) => (dep[webpackThen](onResolve, onReject)));
+/******/ 			nested = false;
+/******/ 		};
+/******/ 		var promise = new Promise((resolve, rej) => {
+/******/ 			reject = rej;
+/******/ 			outerResolve = () => (resolve(exports), completeQueue(queue), queue = 0);
+/******/ 		});
+/******/ 		promise[webpackExports] = exports;
+/******/ 		promise[webpackThen] = (fn, rejectFn) => {
+/******/ 			if (isEvaluating) { return completeFunction(fn); }
+/******/ 			if (currentDeps) whenAll(currentDeps, fn, rejectFn);
+/******/ 			queueFunction(queue, fn);
+/******/ 			promise['catch'](rejectFn);
+/******/ 		};
+/******/ 		module.exports = promise;
+/******/ 		body((deps) => {
+/******/ 			if(!deps) return outerResolve();
+/******/ 			currentDeps = wrapDeps(deps);
+/******/ 			var fn, result;
+/******/ 			var promise = new Promise((resolve, reject) => {
+/******/ 				fn = () => (resolve(result = currentDeps.map((d) => (d[webpackExports]))));
+/******/ 				fn.r = 0;
+/******/ 				whenAll(currentDeps, fn, reject);
+/******/ 			});
+/******/ 			return fn.r ? promise : result;
+/******/ 		}).then(outerResolve, reject);
+/******/ 		isEvaluating = false;
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/compat */
+/******/ 
+/******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
+/******/ 
+/************************************************************************/
+/******/ 
+/******/ // startup
+/******/ // Load entry module and return exports
+/******/ // This entry module used 'module' so it can't be inlined
+/******/ var __webpack_exports__ = __nccwpck_require__(378);
+/******/ __webpack_exports__ = await __webpack_exports__;
+/******/ 
+
 //# sourceMappingURL=index.js.map
