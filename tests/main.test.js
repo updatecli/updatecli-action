@@ -53,6 +53,7 @@ describe('main', () => {
     )
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
+    expect(process.exitCode).toBe(ExitCode.Success)
   })
 
   it('unknown extract', async () => {
