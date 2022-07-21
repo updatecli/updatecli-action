@@ -35,5 +35,9 @@
     "eslint-plugin-jest": "^26.2.2",
     "jest": "^28.1.0",
     "tmp": "^0.2.1"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1"
   }
 }
