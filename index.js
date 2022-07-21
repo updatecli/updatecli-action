@@ -6,11 +6,11 @@ import path from 'node:path'
 const version = core.getInput('version')
 
 async function extractUpdatecli(downloadPath) {
-  if (process.platform == 'win32') {
+  if (process.platform == 'linux') {
     return tool.extractZip(downloadPath)
-  } else if (process.platform == 'darwin') {
+  } else if (process.platform == 'win32') {
     return tool.extractXar(downloadPath)
-  } else if (process.platform == 'linux') {
+  } else if (process.platform == 'darwin') {
     return tool.extractTar(downloadPath)
   } else {
     throw new Error(`Unsupported platform: ${process.platform}`)
@@ -20,6 +20,16 @@ async function extractUpdatecli(downloadPath) {
 // download Updatecli retrieve updatecli binary from Github Release
 async function updatecliDownload() {
   const updatecliPackages = [
+    {
+      arch: 'x64',
+      platform: 'linux',
+      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_x86_64.tar.gz`,
+    },
+    {
+      arch: 'arm64',
+      platform: 'linux',
+      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_arm64.tar.gz`,
+    },
     {
       arch: 'x64',
       platform: 'win32',
@@ -40,27 +50,16 @@ async function updatecliDownload() {
       platform: 'darwin',
       url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Darwin_arm64.tar.gz`,
     },
-    {
-      arch: 'x64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_x86_64.tar.gz`,
-    },
-    {
-      arch: 'arm64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_arm64.tar.gz`,
-    },
   ]
 
   try {
-    const platform = process.platform
-    const arch = process.arch
-
     const updatecliPackage = updatecliPackages.find(
-      x => x.platform == platform && x.arch == arch
+      x => x.platform == process.platform && x.arch == process.arch
     )
     if (!updatecliPackage) {
-      throw new Error(`Unsupported platform ${platform} and arch ${arch}`)
+      throw new Error(
+        `Unsupported platform ${process.platform} and arch ${process.arch}`
+      )
     }
 
     core.info(`Downloading ${updatecliPackage.url}`)
@@ -77,7 +76,7 @@ async function updatecliDownload() {
       version
     )
 
-    if (platform == 'linux' || platform == 'darwin') {
+    if (process.platform == 'linux' || process.platform == 'darwin') {
       await exec.exec('chmod', ['+x', path.join(cachedPath, 'updatecli')])
     }
 
