@@ -82,8 +82,6 @@ async function updatecliDownload() {
       await exec.exec('chmod', ['+x', path.join(cachedPath, 'updatecli')])
     }
 
-    core.addPath(cachedPath)
-
     core.info(`Downloaded to ${cachedPath}`)
   } catch (error) {
     core.setFailed(error.message)
