@@ -7,6 +7,7 @@ import {
   updatecliVersion,
   updatecliExtract,
 } from 'src/main'
+import {ExitCode} from '@actions/core'
 
 const directory = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -64,17 +65,28 @@ describe('main', () => {
 
   it('unknown platform', async () => {
     fakePlatformArch('foo', 'bar')
-    await updatecliDownload()
-    expect(process.exitCode).not.toBe(0)
+    await expect(
+      updatecliDownload()
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Unsupported platform foo and arch bar"`
+    )
     restorePlatformArch()
   })
 
   it('updatecli not found', async () => {
     const path = process.env['PATH']
     process.env['PATH'] = ''
-    await updatecliVersion()
-    expect(process.exitCode).not.toBe(0)
+    await expect(updatecliVersion()).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Unable to locate executable file: updatecli. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also check the file mode to verify the file is executable."`
+    )
     process.env['PATH'] = path
+  })
+
+  it('run unknown platform', async () => {
+    fakePlatformArch('foo', 'bar')
+    await run()
+    expect(process.exitCode).toBe(ExitCode.Failure)
+    restorePlatformArch()
   })
 
   it('linux should download', async () => {
