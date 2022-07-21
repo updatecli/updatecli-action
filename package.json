@@ -20,7 +20,15 @@
     "url": "https://github.com/olblak/updatecli-action/issues"
   },
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "transform": {},
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**"
+    ]
   },
   "type": "module",
   "homepage": "https://github.com/olblak/updatecli-action#readme",
@@ -38,6 +46,7 @@
     "tmp": "^0.2.1"
   },
   "devDependencies": {
+    "@types/jest": "^28.1.6",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-unicorn": "^43.0.2"
