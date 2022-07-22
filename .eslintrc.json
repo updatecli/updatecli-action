@@ -1,18 +1,26 @@
 {
-    "env": {
-        "commonjs": true,
-        "es6": true,
-        "jest": true,
-        "node": true
-    },
-    "extends": "eslint:recommended",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018
-    },
-    "rules": {
-    }
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "**/node_modules/",
+    "coverage/**"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:unicorn/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "rules": {}
 }

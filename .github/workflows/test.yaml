@@ -21,6 +21,8 @@ jobs:
 
     - run: npm ci
 
+    - run: npm test
+
   e2e:
     name: Test Updatecli Github Action
     runs-on: ubuntu-latest
