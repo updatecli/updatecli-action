@@ -47,5 +47,5 @@ targets:
         spec:
             file: tests/main.test.js
             matchPattern: const version = '(.*)'
-            replaceWith: const version = '{{ source "updatecli" }}'
+            replacepattern: const version = '{{ source "updatecli" }}'
 version: 0.28.0
