@@ -49,6 +49,6 @@
     "eslint-plugin-jest": "^26.2.2",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-unicorn": "^43.0.2",
-    "jest": "^28.1.0"
+    "jest": "^28.1.3"
   }
 }
