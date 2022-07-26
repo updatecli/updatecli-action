@@ -8,6 +8,7 @@ import {
   updatecliExtract,
 } from 'src/main'
 import {ExitCode} from '@actions/core'
+import yaml from 'js-yaml'
 
 const directory = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -17,7 +18,11 @@ const temporaryPath = path.join(directory, 'TEMP')
 process.env['RUNNER_TEMP'] = temporaryPath
 process.env['RUNNER_TOOL_CACHE'] = cachePath
 
-const version = 'v0.29.0'
+// Read action.yaml file to get the version
+const actionYaml = yaml.load(
+  await fs.readFile(path.join(directory, '../action.yaml'))
+)
+const version = actionYaml.inputs.version.default
 const versionWithoutV = version.slice(1)
 
 process.env['INPUT_VERSION'] = version
