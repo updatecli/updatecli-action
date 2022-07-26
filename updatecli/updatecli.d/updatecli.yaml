@@ -41,11 +41,4 @@ targets:
             key: inputs.version.default
         scmid: default
         sourceid: updatecli
-    tests:
-        name: Bump updatecli version in main.test.js
-        kind: file
-        spec:
-            file: tests/main.test.js
-            matchPattern: const version = '(.*)'
-            replacepattern: const version = '{{ source "updatecli" }}'
 version: 0.28.0
