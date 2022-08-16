@@ -13,15 +13,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Set Node.js 16.x
+      uses: actions/setup-node@v3.4.1
+      with:
+        node-version: 16.x
+        cache: npm
+
     - name: Install Dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run Lint Test
       run: npm run lint
 
-    - run: npm ci
-
-    - run: npm test
+    - name: Run tests
+      run: npm test
 
   e2e:
     name: Test Updatecli Github Action

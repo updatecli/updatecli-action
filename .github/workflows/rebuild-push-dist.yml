@@ -1,0 +1,62 @@
+name: Dependabot post-update
+on:
+  push:
+    branches:
+      - dependabot/npm_and_yarn/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  post-update:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: 16.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild the dist/ directory
+        run: npm run prepare
+
+      - name: git commit dist/
+        id: commit
+        run: |
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -eq "0" ]; then
+            echo "❎ no changes to dist"
+            echo "::set-output name=diff::false"
+            exit 0
+          fi
+
+          git add dist/
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Apply dist changes"
+          echo "::set-output name=diff::true"
+          echo "💾 commited dist/ changes"
+
+      - uses: tibdex/github-app-token@v1.6.0
+        id: generate_token
+        if: steps.commit.outputs.diff
+        with:
+          app_id: ${{ secrets.UPDATECLIBOT_APP_ID }}
+          private_key: ${{ secrets.UPDATECLIBOT_APP_PRIVKEY }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        if: steps.commit.outputs.diff
+        with:
+          github_token: ${{ steps.generate_token.outputs.token }}
+          branch: ${{ github.ref }}
