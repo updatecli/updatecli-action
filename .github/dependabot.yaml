@@ -12,3 +12,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      # Prevent @types/node major version updates we only need to bump when we switch engine version
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
