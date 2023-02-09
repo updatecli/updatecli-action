@@ -1,17 +1,18 @@
 name: UPDATECLI.YAML
 pipelineid: f1d125f2e8197c29b4655c467651503ab61377fa1a31af6152254a7e8764c2ab
 title: Bump updatecli version
-pullrequests:
+actions:
     default:
         title: Bump updatecli version to {{ source "updatecli" }}
-        kind: github
+        kind: github/pullrequest
         spec:
+            automerge: true
+            mergemethod: squash
+            usetitleforautomerge: true
             labels:
                 - dependencies
                 - updatecli
         scmid: default
-        targets:
-            - action
 scms:
     default:
         kind: github
@@ -41,4 +42,4 @@ targets:
             key: inputs.version.default
         scmid: default
         sourceid: updatecli
-version: 0.28.0
+version: 0.43.0
