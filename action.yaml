@@ -3,13 +3,13 @@ name: 'Updatecli Installer'
 description: 'Install a specific Updatecli version'
 author: 'Updatecli'
 branding:
-    icon: 'fast-forward'
-    color: 'purple'
+  icon: 'fast-forward'
+  color: 'purple'
 inputs:
-    version:
-        description: 'Specify Updatecli version to use. Accepted values are any Updatecli version'
-        required: false
-        default: "v0.47.1"
+  version:
+    description: 'Specify Updatecli version to use. Accepted values are any Updatecli version'
+    required: false
+    default: "v0.47.2"
 runs:
-    using: 'node16'
-    main: 'dist/index.js'
+  using: 'node16'
+  main: 'dist/index.js'
