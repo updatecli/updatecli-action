@@ -33,7 +33,7 @@
   "type": "module",
   "homepage": "https://github.com/olblak/updatecli-action#readme",
   "dependencies": {
-    "@actions/core": "^1.10.0",
+    "@actions/core": "^1.10.1",
     "@actions/exec": "^1.1.1",
     "@actions/io": "^1.1.3",
     "@actions/tool-cache": "^2.0.1"
