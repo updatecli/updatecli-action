@@ -1,0 +1,28 @@
+name: "Bump All NPM package version"
+pipelineid: npm
+
+actions:
+    default:
+        kind: github/pullrequest
+        scmid: default
+        spec:
+          labels:
+            - "dependencies"
+
+scms:
+  default:
+    kind: github
+    spec:
+      owner: updatecli
+      repository: updatecli-action
+      token: '{{ requiredEnv "UPDATECLI_GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "UPDATECLI_GITHUB_ACTOR" }}'
+      branch: v2
+
+autodiscovery:
+  scmid: default
+  actionid:  default
+  groupby: all
+  crawlers:
+    npm:
+
