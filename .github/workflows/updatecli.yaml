@@ -26,14 +26,14 @@ jobs:
         uses: "updatecli/updatecli-action@v2"
 
       - name: "Run updatecli in dryrun"
-        run: "updatecli diff --config ./updatecli/updatecli.d --experimental"
+        run: "updatecli diff --config ./updatecli/updatecli.d --experimental --clean=true"
         env:
           UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Run updatecli"
         if: github.ref == 'refs/heads/v2'
-        run: "updatecli apply --config ./updatecli/updatecli.d --experimental"
+        run: "updatecli apply --config ./updatecli/updatecli.d --experimental --clean=true"
         env:
           UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
