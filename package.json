@@ -39,7 +39,7 @@
     "@actions/tool-cache": "^2.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.11",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.15",
     "@vercel/ncc": "^0.36.1",
     "cross-env": "^7.0.3",
