@@ -2,7 +2,7 @@
 name: updatecli
 
 on:
-  mergre_group:
+  merge_group:
     branches:
       - v2
   push:
