@@ -1,6 +1,5 @@
-name: UPDATECLI.YAML
-pipelineid: f1d125f2e8197c29b4655c467651503ab61377fa1a31af6152254a7e8764c2ab
-title: Bump updatecli version
+name: "deps: Bump updatecli version"
+pipelineid: updatecli
 actions:
     default:
         title: Bump updatecli version to {{ source "updatecli" }}
@@ -21,7 +20,7 @@ scms:
             email: me@olblak.com
             owner: updatecli
             repository: updatecli-action
-            token: '{{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}'
+            token: '{{requiredEnv "GITHUB_TOKEN"}}'
             user: updatecli
             username: github-actions
         disabled: false
@@ -32,14 +31,13 @@ sources:
         spec:
             owner: updatecli
             repository: updatecli
-            token: '{{requiredEnv "UPDATECLI_GITHUB_TOKEN"}}'
+            token: '{{requiredEnv "GITHUB_TOKEN"}}'
 targets:
     action:
         name: Bump updatecli version in action.yaml
         kind: yaml
         spec:
             file: action.yaml
-            key: inputs.version.default
+            key: $.inputs.version.default
         scmid: default
         sourceid: updatecli
-version: 0.43.0
