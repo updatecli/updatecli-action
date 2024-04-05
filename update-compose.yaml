@@ -1,0 +1,23 @@
+policies:
+  - name: Local Updatecli Website Policies
+    config:
+      - updatecli/updatecli.d/
+  - name: Handle Nodejs version in githubaction
+    policy: ghcr.io/updatecli/policies/nodejs/githubaction:0.4.0@sha256:aeb512401d128f791cffed7ad6c7c79c5d30c012f57e410e7cb5027f4d360833
+    values:
+      - updatecli/values.d/scm.yaml
+      - updatecli/values.d/nodejs.yaml
+  - name: Update Updatecli policies
+    policy: ghcr.io/updatecli/policies/updatecli/autodiscovery:0.2.0@sha256:46e599fb7e874ee3f1c9cf5e4dd64b328a15d61d03e106176b19a07683afde29
+    values:
+      - updatecli/values.d/scm.yaml
+  - name: NPM autodiscovery
+    policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.6.0@sha256:a6f94de3fd9aba371ad285114f4444ea64a64524956560481f9dbbd55b157739
+    values:
+      - updatecli/values.d/scm.yaml
+      - updatecli/values.d/npm.yaml
+  - name: Handle Updatecli version in GitHub action
+    policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.1.0@sha256:a5b8933ebfc65ba6ea9e60927900135062a3293f18a68292431cec1e53208e3d
+    values:
+      - updatecli/values.d/scm.yaml
+

@@ -12,6 +12,9 @@
 name: "CodeQL"
 
 on:
+  merge_group:
+    branches:
+      - v2
   push:
     branches: [ main ]
   pull_request:
