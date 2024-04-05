@@ -2,14 +2,16 @@
 name: updatecli
 
 on:
-  workflow_dispatch:
+  mergre_group:
+    branches:
+      - v2
   push:
     branches:
-      - v1
       - v2
   schedule:
     # Run once a day
     - cron: '*/10 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,17 +26,19 @@ jobs:
 
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@v2"
+        with:
+          version: "v0.75.0-rc.2"
 
       - name: "Run updatecli in dryrun"
-        run: "updatecli diff --config ./updatecli/updatecli.d --experimental --clean=true"
+        run: "updatecli compose diff"
         env:
-          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
-          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Run updatecli"
         if: github.ref == 'refs/heads/v2'
-        run: "updatecli apply --config ./updatecli/updatecli.d --experimental --clean=true"
+        run: "updatecli compose apply"
         env:
-          UPDATECLI_GITHUB_ACTOR: ${{ github.actor }}
-          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
