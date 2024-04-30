@@ -27,8 +27,6 @@ jobs:
 
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@v2"
-        with:
-          version: "v0.75.0-rc.2"
 
       - name: "Run updatecli in dryrun"
         run: "updatecli compose diff"
