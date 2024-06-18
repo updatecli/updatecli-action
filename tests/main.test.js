@@ -59,7 +59,7 @@ describe('main', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     expect(process.exitCode).toBe(ExitCode.Success)
-  })
+  }, 10_000)
 
   it('unknown extract', async () => {
     await expect(
@@ -67,7 +67,7 @@ describe('main', () => {
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Unsupported archive type: foo.bar"`
     )
-  })
+  }, 10_000)
 
   it('unknown platform', async () => {
     fakePlatformArch('foo', 'bar')
@@ -77,7 +77,7 @@ describe('main', () => {
       `"Unsupported platform foo and arch bar"`
     )
     restorePlatformArch()
-  })
+  }, 10_000)
 
   it('updatecli not found', async () => {
     const path = process.env['PATH']
@@ -86,14 +86,14 @@ describe('main', () => {
       `"Unable to locate executable file: updatecli. Please verify either the file path exists or the file can be found within a directory specified by the PATH environment variable. Also check the file mode to verify the file is executable."`
     )
     process.env['PATH'] = path
-  })
+  }, 10_000)
 
   it('run unknown platform', async () => {
     fakePlatformArch('foo', 'bar')
     await run()
     expect(process.exitCode).toBe(ExitCode.Failure)
     restorePlatformArch()
-  })
+  }, 10_000)
 
   it('linux should download', async () => {
     fakePlatformArch('linux', 'x64')
@@ -108,7 +108,7 @@ describe('main', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     restorePlatformArch()
-  })
+  }, 10_000)
 
   it('windows should download', async () => {
     fakePlatformArch('win32', 'x64')
@@ -123,7 +123,7 @@ describe('main', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     restorePlatformArch()
-  })
+  }, 10_000)
 
   it('darwin should download', async () => {
     fakePlatformArch('darwin', 'x64')
@@ -138,7 +138,7 @@ describe('main', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     restorePlatformArch()
-  })
+  }, 10_000)
 })
 
 afterAll(async () => {
