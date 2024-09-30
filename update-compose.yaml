@@ -8,7 +8,7 @@ policies:
       - updatecli/values.d/scm.yaml
       - updatecli/values.d/nodejs.yaml
   - name: Update Updatecli policies
-    policy: ghcr.io/updatecli/policies/updatecli/autodiscovery:0.3.0@sha256:c31d2cb44476c0d2647e21a9908eb461f02c4aec6eb431b863765a92ed7f5375
+    policy: ghcr.io/updatecli/policies/updatecli/autodiscovery:0.5.0@sha256:947817644fb89e27f7b7121b822328c2d47364c7a3a08241e4d2ac1a5897020c
     values:
       - updatecli/values.d/scm.yaml
   - name: NPM autodiscovery
