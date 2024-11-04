@@ -9,7 +9,7 @@ inputs:
   version:
     description: 'Specify Updatecli version to use. Accepted values are any Updatecli version'
     required: false
-    default: v0.85.0
+    default: v0.86.0
 runs:
   using: 'node20'
   main: 'dist/index.js'
