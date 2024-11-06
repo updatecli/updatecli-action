@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: "Setup updatecli"
-        uses: "updatecli/updatecli-action@v2.69.0"
+        uses: "updatecli/updatecli-action@v2.70.0"
       - name: "Run updatecli in dryrun"
         run: "updatecli compose diff"
         env:
