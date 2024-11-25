@@ -8,8 +8,8 @@ branding:
 inputs:
   version:
     description: 'Specify Updatecli version to use. Accepted values are any Updatecli version'
-    required: false
-    default: v0.86.1
+  version-file:
+    description: 'The path to the `.updatecli-version` file. See examples of supported syntax in README file'
 runs:
   using: 'node20'
   main: 'dist/index.js'

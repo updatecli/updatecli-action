@@ -6626,7 +6626,7 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("util");
 /***/ ((__webpack_module__, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
 
 __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony import */ var _src_main_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(9459);
+/* harmony import */ var _src_main_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(3971);
 
 
 await (0,_src_main_js__WEBPACK_IMPORTED_MODULE_0__/* .run */ .KH)()
@@ -6636,7 +6636,7 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 9459:
+/***/ 3971:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
 
 
@@ -6645,7 +6645,7 @@ __nccwpck_require__.d(__webpack_exports__, {
   "KH": () => (/* binding */ run)
 });
 
-// UNUSED EXPORTS: updatecliDownload, updatecliExtract, updatecliVersion
+// UNUSED EXPORTS: getUpdatecliVersion, getVersionFromFileContent, updatecliDownload, updatecliExtract, updatecliVersion
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
@@ -6655,11 +6655,36 @@ var tool_cache = __nccwpck_require__(7784);
 var exec = __nccwpck_require__(1514);
 ;// CONCATENATED MODULE: external "node:path"
 const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
+;// CONCATENATED MODULE: external "node:fs"
+const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
 ;// CONCATENATED MODULE: ./src/main.js
 
 
 
 
+
+
+const DEFAULT_VERSION = `v0.86.1`
+
+// get the Updatecli version from the action inputs
+async function getUpdatecliVersion() {
+  const versionInput = core.getInput('version', {required: false})
+  const versionFile = core.getInput('version-file', {required: false})
+
+  let version = versionInput
+  if (!versionInput && !versionFile) {
+    core.info(`Set default value for version to ${DEFAULT_VERSION}`)
+    version = DEFAULT_VERSION
+  }
+
+  if (!version && versionFile) {
+    version = await getVersionFromFileContent(versionFile)
+    if (!version) {
+      throw new Error(`No supported version was found in file ${versionFile}`)
+    }
+  }
+  return version
+}
 
 async function updatecliExtract(downloadPath, downloadUrl) {
   if (downloadUrl.endsWith('.tar.gz')) {
@@ -6672,9 +6697,10 @@ async function updatecliExtract(downloadPath, downloadUrl) {
 }
 
 // download Updatecli retrieve updatecli binary from Github Release
-async function updatecliDownload() {
-  const version = core.getInput('version')
-
+async function updatecliDownload(version) {
+  if (!version) {
+    throw new Error(`No supported version was found`)
+  }
   const updatecliPackages = [
     {
       arch: 'x64',
@@ -6751,11 +6777,46 @@ async function updatecliVersion() {
 
 async function run() {
   try {
-    await updatecliDownload()
+    const version = await getUpdatecliVersion()
+    await updatecliDownload(version)
     await updatecliVersion()
     process.exitCode = core.ExitCode.Success
   } catch (error) {
     core.setFailed(error.message)
+  }
+}
+
+async function getVersionFromFileContent(versionFile) {
+  if (!versionFile) {
+    return
+  }
+
+  let versionRegExp
+  const versionFileName = external_node_path_namespaceObject.basename(versionFile)
+  if (versionFileName == '.tool-versions') {
+    versionRegExp = /^(updatecli\s+)(?:\S*-)?(?<version>v(\d+)(\.\d+)(\.\d+))$/m
+  } else if (versionFileName) {
+    versionRegExp = /(?<version>(v\d+\S*))(\s|$)/
+  } else {
+    return
+  }
+
+  try {
+    const content = external_node_fs_namespaceObject.readFileSync(versionFile).toString().trim()
+    let fileContent = ''
+    if (content.match(versionRegExp)?.groups?.version) {
+      fileContent = content.match(versionRegExp)?.groups?.version
+    }
+    if (!fileContent) {
+      return
+    }
+    core.debug(`Version from file '${fileContent}'`)
+    return fileContent
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return
+    }
+    throw error
   }
 }
 

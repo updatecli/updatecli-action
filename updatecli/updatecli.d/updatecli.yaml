@@ -33,11 +33,21 @@ sources:
             repository: updatecli
             token: '{{requiredEnv "GITHUB_TOKEN"}}'
 targets:
-    action:
-        name: Bump updatecli version in action.yaml
-        kind: yaml
+    src-main:
+        name: Bump updatecli version in src/main.js
+        kind: file
         spec:
-            file: action.yaml
-            key: $.inputs.version.default
+            file: src/main.js
+            matchpattern: "const DEFAULT_VERSION = (.+)"
+            replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
+        scmid: default
+        sourceid: updatecli
+    test-main:
+        name: Bump updatecli version in tests/main.test.js
+        kind: file
+        spec:
+            file: tests/main.test.js
+            matchpattern: "const DEFAULT_VERSION = (.+)"
+            replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
         scmid: default
         sourceid: updatecli

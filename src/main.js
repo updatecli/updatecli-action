@@ -2,6 +2,29 @@ import core from '@actions/core'
 import tool from '@actions/tool-cache'
 import exec from '@actions/exec'
 import path from 'node:path'
+import fs from 'node:fs'
+
+const DEFAULT_VERSION = `v0.86.1`
+
+// get the Updatecli version from the action inputs
+export async function getUpdatecliVersion() {
+  const versionInput = core.getInput('version', {required: false})
+  const versionFile = core.getInput('version-file', {required: false})
+
+  let version = versionInput
+  if (!versionInput && !versionFile) {
+    core.info(`Set default value for version to ${DEFAULT_VERSION}`)
+    version = DEFAULT_VERSION
+  }
+
+  if (!version && versionFile) {
+    version = await getVersionFromFileContent(versionFile)
+    if (!version) {
+      throw new Error(`No supported version was found in file ${versionFile}`)
+    }
+  }
+  return version
+}
 
 export async function updatecliExtract(downloadPath, downloadUrl) {
   if (downloadUrl.endsWith('.tar.gz')) {
@@ -14,9 +37,10 @@ export async function updatecliExtract(downloadPath, downloadUrl) {
 }
 
 // download Updatecli retrieve updatecli binary from Github Release
-export async function updatecliDownload() {
-  const version = core.getInput('version')
-
+export async function updatecliDownload(version) {
+  if (!version) {
+    throw new Error(`No supported version was found`)
+  }
   const updatecliPackages = [
     {
       arch: 'x64',
@@ -93,10 +117,45 @@ export async function updatecliVersion() {
 
 export async function run() {
   try {
-    await updatecliDownload()
+    const version = await getUpdatecliVersion()
+    await updatecliDownload(version)
     await updatecliVersion()
     process.exitCode = core.ExitCode.Success
   } catch (error) {
     core.setFailed(error.message)
+  }
+}
+
+export async function getVersionFromFileContent(versionFile) {
+  if (!versionFile) {
+    return
+  }
+
+  let versionRegExp
+  const versionFileName = path.basename(versionFile)
+  if (versionFileName == '.tool-versions') {
+    versionRegExp = /^(updatecli\s+)(?:\S*-)?(?<version>v(\d+)(\.\d+)(\.\d+))$/m
+  } else if (versionFileName) {
+    versionRegExp = /(?<version>(v\d+\S*))(\s|$)/
+  } else {
+    return
+  }
+
+  try {
+    const content = fs.readFileSync(versionFile).toString().trim()
+    let fileContent = ''
+    if (content.match(versionRegExp)?.groups?.version) {
+      fileContent = content.match(versionRegExp)?.groups?.version
+    }
+    if (!fileContent) {
+      return
+    }
+    core.debug(`Version from file '${fileContent}'`)
+    return fileContent
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return
+    }
+    throw error
   }
 }
