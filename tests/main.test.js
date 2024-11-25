@@ -19,7 +19,7 @@ const temporaryPath = path.join(directory, 'TEMP')
 process.env['RUNNER_TEMP'] = temporaryPath
 process.env['RUNNER_TOOL_CACHE'] = cachePath
 
-const DEFAULT_VERSION = `v0.86.0`
+const DEFAULT_VERSION = `v0.87.0`
 const versionWithoutV = DEFAULT_VERSION.slice(1)
 
 const originalPlatform = process.platform
@@ -175,22 +175,22 @@ describe('updatecliDownload', () => {
 describe('getVersionFromFileContent', () => {
   it('should return version from .updatecli-version file', async () => {
     const versionFile = path.join(temporaryPath, '.updatecli-version')
-    const fileContent = 'v0.86.1'
+    const fileContent = DEFAULT_VERSION
     await fs.writeFile(versionFile, fileContent)
 
     const version = await getVersionFromFileContent(versionFile)
-    expect(version).toBe('v0.86.1')
+    expect(version).toBe(DEFAULT_VERSION)
 
     await fs.unlink(versionFile)
   })
 
   it('should return version from .tool-versions file', async () => {
     const versionFile = path.join(temporaryPath, '.tool-versions')
-    const fileContent = 'updatecli v0.86.1'
+    const fileContent = 'updatecli ' + DEFAULT_VERSION
     await fs.writeFile(versionFile, fileContent)
 
     const version = await getVersionFromFileContent(versionFile)
-    expect(version).toBe('v0.86.1')
+    expect(version).toBe(DEFAULT_VERSION)
 
     await fs.unlink(versionFile)
   })
@@ -223,7 +223,7 @@ describe('getUpdatecliVersion', () => {
     process.env['INPUT_VERSION'] = ''
     process.env['INPUT_VERSION-FILE'] = ''
     const result = await getUpdatecliVersion()
-    expect(result).toBe('v0.86.1')
+    expect(result).toBe(DEFAULT_VERSION)
   })
 
   it('should return the version from input if provided', async () => {
