@@ -6664,7 +6664,7 @@ const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import
 
 
 
-const DEFAULT_VERSION = `v0.86.1`
+const DEFAULT_VERSION = `v0.87.0`
 
 // get the Updatecli version from the action inputs
 async function getUpdatecliVersion() {
