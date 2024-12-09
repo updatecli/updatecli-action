@@ -8,9 +8,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  # For some reason, this job is always canceled
-  # So I am trying to disable this setting to see if it changes anything
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   post-update:
