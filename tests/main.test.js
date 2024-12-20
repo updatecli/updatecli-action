@@ -19,7 +19,7 @@ const temporaryPath = path.join(directory, 'TEMP')
 process.env['RUNNER_TEMP'] = temporaryPath
 process.env['RUNNER_TOOL_CACHE'] = cachePath
 
-const DEFAULT_VERSION = `v0.89.0`
+const DEFAULT_VERSION = `v0.90.0`
 const versionWithoutV = DEFAULT_VERSION.slice(1)
 
 const originalPlatform = process.platform
