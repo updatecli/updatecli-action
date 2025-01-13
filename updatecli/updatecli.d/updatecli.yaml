@@ -15,13 +15,13 @@ scms:
     default:
         kind: "github"
         spec:
-            branch: "v2"
-            email: "me@olblak.com"
-            owner: "updatecli"
-            repository: "updatecli-action"
+            branch: '{{ .scm.branch }}'
+            email: ' {{ .scm.email }}'
+            owner: '{{ .scm.owner }}'
+            repository: '{{ .scm.repository }}'
             token: '{{requiredEnv "GITHUB_TOKEN"}}'
-            user: "updatecli"
-            username: "github-actions"
+            user: '{{ .scm.user }}'
+            username: '{{ .scm.username }}'
         disabled: false
 sources:
     updatecli:
