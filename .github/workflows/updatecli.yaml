@@ -11,41 +11,34 @@ on:
     # Run once a day
     - cron: '*/10 * * * *'
   workflow_dispatch:
-
 permissions:
   actions: write
   contents: write
   pull-requests: write
-
 jobs:
   updatecli:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set Node.js 20.x
         uses: actions/setup-node@v4.1.0
         with:
           node-version: 20
           cache: npm
-
       - name: "Setup updatecli"
-        uses: "updatecli/updatecli-action@v2.75.0"
-
+        uses: "updatecli/updatecli-action@v2.76.0"
       - name: "Run updatecli in dryrun"
         run: "updatecli compose diff"
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: tibdex/github-app-token@v2.1
         id: generate_token
         if: github.ref == 'refs/heads/v2'
         with:
           app_id: ${{ secrets.UPDATECLIBOT_APP_ID }}
           private_key: ${{ secrets.UPDATECLIBOT_APP_PRIVKEY }}
-
       - name: "Run updatecli"
         if: github.ref == 'refs/heads/v2'
         run: "updatecli compose apply"
