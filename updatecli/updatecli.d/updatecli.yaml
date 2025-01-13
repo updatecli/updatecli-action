@@ -1,53 +1,77 @@
-name: "deps: Bump updatecli version"
-pipelineid: updatecli
+name: "deps: bump updatecli version"
+pipelineid: "updatecli"
 actions:
     default:
-        title: Bump updatecli version to {{ source "updatecli" }}
-        kind: github/pullrequest
+        kind: "github/pullrequest"
         spec:
             automerge: true
-            mergemethod: squash
+            mergemethod: "squash"
             usetitleforautomerge: true
             labels:
-                - dependencies
-                - updatecli
-        scmid: default
+                - "dependencies"
+                - "updatecli"
+        scmid: "default"
 scms:
     default:
-        kind: github
+        kind: "github"
         spec:
-            branch: v2
-            email: me@olblak.com
-            owner: updatecli
-            repository: updatecli-action
+            branch: "v2"
+            email: "me@olblak.com"
+            owner: "updatecli"
+            repository: "updatecli-action"
             token: '{{requiredEnv "GITHUB_TOKEN"}}'
-            user: updatecli
-            username: github-actions
+            user: "updatecli"
+            username: "github-actions"
         disabled: false
 sources:
     updatecli:
-        name: Get latest updatecli version
-        kind: githubrelease
+        name: "Get latest updatecli version"
+        kind: "githubrelease"
         spec:
-            owner: updatecli
-            repository: updatecli
+            owner: "updatecli"
+            repository: "updatecli"
             token: '{{requiredEnv "GITHUB_TOKEN"}}'
+            versionfilter:
+              kind: "semver"
 targets:
     src-main:
-        name: Bump updatecli version in src/main.js
-        kind: file
+        name: 'deps: bump updatecli version in src/main.js to {{ source "updatecli" }}'
+        kind: "file"
         spec:
-            file: src/main.js
-            matchpattern: "const DEFAULT_VERSION = (.+)"
+            file: "src/main.js"
+            matchpattern: 'const DEFAULT_VERSION = (.+)'
             replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
-        scmid: default
-        sourceid: updatecli
+        scmid: "default"
+        sourceid: "updatecli"
+
     test-main:
-        name: Bump updatecli version in tests/main.test.js
-        kind: file
+        name: 'deps: bump updatecli version in tests/main.test.js to {{ source "updatecli" }}'
+        kind: "file"
         spec:
-            file: tests/main.test.js
+            file: "tests/main.test.js"
             matchpattern: "const DEFAULT_VERSION = (.+)"
             replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
-        scmid: default
-        sourceid: updatecli
+        scmid: "default"
+        sourceid: "updatecli"
+
+    dist:
+        name: 'chore: rebuild the dist directory'
+        dependson:
+          - "src-main"
+          - "test-main"
+        disablesourceinput: true
+        kind: shell
+        scmid: "default"
+        spec:
+          command: |
+            npm ci
+            npm run prepare
+          changedif:
+            kind: file/checksum
+            spec:
+              files:
+                - "dist/index.js"
+                - "dist/index.js.map"
+          environments:
+            - name: "PATH"
+            - name: "HOME"
