@@ -4,6 +4,7 @@ on:
     branches:
       - dependabot/npm_and_yarn/**
       - updatecli_master_**
+      - updatecli_v2_**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
