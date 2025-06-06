@@ -1,12 +1,15 @@
 name: "deps: bump updatecli version"
-pipelineid: "updatecli"
+pipelineid: "updatecli_action_version"
 actions:
     default:
         kind: "github/pullrequest"
         spec:
+            title: 'deps: update updatecli version to {{ source "updatecli" }}'
             automerge: true
             mergemethod: "squash"
             usetitleforautomerge: true
+            reviewers:
+                - "updatecli/core"
             labels:
                 - "dependencies"
                 - "updatecli"
@@ -22,6 +25,7 @@ scms:
             token: '{{requiredEnv "GITHUB_TOKEN"}}'
             user: '{{ .scm.user }}'
             username: '{{ .scm.username }}'
+            commitusingapi: true
         disabled: false
 sources:
     updatecli:
@@ -32,7 +36,7 @@ sources:
             repository: "updatecli"
             token: '{{requiredEnv "GITHUB_TOKEN"}}'
             versionfilter:
-              kind: "semver"
+                kind: "semver"
 targets:
     src-main:
         name: 'deps: bump updatecli version in src/main.js to {{ source "updatecli" }}'
@@ -57,21 +61,21 @@ targets:
     dist:
         name: 'chore: rebuild the dist directory'
         dependson:
-          - "src-main"
-          - "test-main"
+            - "src-main"
+            - "test-main"
         disablesourceinput: true
         kind: shell
         scmid: "default"
         spec:
-          command: |
-            npm ci
-            npm run prepare
-          changedif:
-            kind: file/checksum
-            spec:
-              files:
-                - "dist/index.js"
-                - "dist/index.js.map"
-          environments:
-            - name: "PATH"
-            - name: "HOME"
+            command: |
+              npm ci
+              npm run prepare
+            changedif:
+                kind: file/checksum
+                spec:
+                    files:
+                        - "dist/index.js"
+                        - "dist/index.js.map"
+            environments:
+                - name: "PATH"
+                - name: "HOME"
