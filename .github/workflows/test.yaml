@@ -14,7 +14,7 @@ jobs:
     name: Test Javascript
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Set Node.js 20.x
       uses: actions/setup-node@v4.4.0
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Updatecli
         uses: ./
