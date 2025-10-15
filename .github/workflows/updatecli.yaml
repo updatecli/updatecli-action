@@ -11,6 +11,9 @@ on:
     # Run once a day
     - cron: '*/10 * * * *'
   workflow_dispatch:
+  repository_dispatch:
+    types:
+      - "updatecli-release"
 permissions:
   actions: write
   contents: write
