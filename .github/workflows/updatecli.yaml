@@ -31,8 +31,7 @@ jobs:
           cache: npm
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@v2.93.0"
-        with:
-          version: v0.110.1
+
       - name: "Run updatecli in dryrun"
         run: "updatecli compose diff"
         env:
