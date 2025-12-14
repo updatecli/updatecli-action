@@ -30,7 +30,7 @@ jobs:
           node-version: 20
           cache: npm
       - name: "Setup updatecli"
-        uses: "updatecli/updatecli-action@v2.96.0"
+        uses: "updatecli/updatecli-action@v2.97.0"
       - name: "Run updatecli in dryrun"
         run: "updatecli compose diff"
         env:
