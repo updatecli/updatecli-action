@@ -12,7 +12,7 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # v6.0.0
       - name: "Setup updatecli"
-        uses: "updatecli/updatecli-action@5ca36367fadc6ad94d590984fd9c696e783ec635" # v2.96.0
+        uses: "updatecli/updatecli-action@v2.98.0" # v2.96.0
         with:
           version: "v0.112.0"
       - name: "Run updatecli"
