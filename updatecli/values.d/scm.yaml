@@ -1,8 +1,7 @@
 scm:
   enabled: true
-  user: updatecli
-  email: updatecli-bot@updatecli.io
+  user: updateclibot
+  email: bot@updatecli.io
   owner: updatecli
-  repository: updatecli-action
-  username: "updatecli"
   branch: v2
+  repository: updatecli-action

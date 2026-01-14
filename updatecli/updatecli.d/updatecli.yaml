@@ -1,81 +1,78 @@
 name: "deps: bump updatecli version"
 pipelineid: "updatecli_action_version"
 actions:
-    default:
-        kind: "github/pullrequest"
-        spec:
-            title: 'deps: update updatecli version to {{ source "updatecli" }}'
-            automerge: true
-            mergemethod: "squash"
-            usetitleforautomerge: true
-            reviewers:
-                - "updatecli/core"
-            labels:
-                - "dependencies"
-                - "updatecli"
-        scmid: "default"
+  default:
+    kind: "github/pullrequest"
+    spec:
+      title: 'deps: update updatecli version to {{ source "updatecli" }}'
+      automerge: true
+      mergemethod: "squash"
+      usetitleforautomerge: true
+      reviewers:
+        - "updatecli/core"
+      labels:
+        - "dependencies"
+        - "updatecli"
+    scmid: "default"
 scms:
-    default:
-        kind: "github"
-        spec:
-            branch: '{{ .scm.branch }}'
-            email: ' {{ .scm.email }}'
-            owner: '{{ .scm.owner }}'
-            repository: '{{ .scm.repository }}'
-            token: '{{requiredEnv "GITHUB_TOKEN"}}'
-            user: '{{ .scm.user }}'
-            username: '{{ .scm.username }}'
-            commitusingapi: true
-        disabled: false
+  default:
+    kind: "github"
+    spec:
+      branch: "{{ .scm.branch }}"
+      email: " {{ .scm.email }}"
+      owner: "{{ .scm.owner }}"
+      repository: "{{ .scm.repository }}"
+      user: "{{ .scm.user }}"
+      commitusingapi: true
+    disabled: false
 sources:
-    updatecli:
-        name: "Get latest updatecli version"
-        kind: "githubrelease"
-        spec:
-            owner: "updatecli"
-            repository: "updatecli"
-            token: '{{requiredEnv "GITHUB_TOKEN"}}'
-            versionfilter:
-                kind: "semver"
+  updatecli:
+    name: "Get latest updatecli version"
+    kind: "githubrelease"
+    spec:
+      owner: "updatecli"
+      repository: "updatecli"
+      versionfilter:
+        kind: "semver"
 targets:
-    src-main:
-        name: 'deps: bump updatecli version in src/main.js to {{ source "updatecli" }}'
-        kind: "file"
-        spec:
-            file: "src/main.js"
-            matchpattern: 'const DEFAULT_VERSION = (.+)'
-            replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
-        scmid: "default"
-        sourceid: "updatecli"
+  src-main:
+    name: 'deps: bump updatecli version in src/main.js to {{ source "updatecli" }}'
+    kind: "file"
+    spec:
+      file: "src/main.js"
+      matchpattern: "const DEFAULT_VERSION = (.+)"
+      replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
+    scmid: "default"
+    sourceid: "updatecli"
 
-    test-main:
-        name: 'deps: bump updatecli version in tests/main.test.js to {{ source "updatecli" }}'
-        kind: "file"
-        spec:
-            file: "tests/main.test.js"
-            matchpattern: "const DEFAULT_VERSION = (.+)"
-            replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
-        scmid: "default"
-        sourceid: "updatecli"
+  test-main:
+    name: 'deps: bump updatecli version in tests/main.test.js to {{ source "updatecli" }}'
+    kind: "file"
+    spec:
+      file: "tests/main.test.js"
+      matchpattern: "const DEFAULT_VERSION = (.+)"
+      replacepattern: 'const DEFAULT_VERSION = `{{ source "updatecli" }}`'
+    scmid: "default"
+    sourceid: "updatecli"
 
-    dist:
-        name: 'chore: rebuild the dist directory'
-        dependson:
-            - "src-main"
-            - "test-main"
-        disablesourceinput: true
-        kind: shell
-        scmid: "default"
+  dist:
+    name: "chore: rebuild the dist directory"
+    dependson:
+      - "src-main"
+      - "test-main"
+    disablesourceinput: true
+    kind: shell
+    scmid: "default"
+    spec:
+      command: |
+        npm ci
+        npm run prepare
+      changedif:
+        kind: file/checksum
         spec:
-            command: |
-              npm ci
-              npm run prepare
-            changedif:
-                kind: file/checksum
-                spec:
-                    files:
-                        - "dist/index.js"
-                        - "dist/index.js.map"
-            environments:
-                - name: "PATH"
-                - name: "HOME"
+          files:
+            - "dist/index.js"
+            - "dist/index.js.map"
+      environments:
+        - name: "PATH"
+        - name: "HOME"
