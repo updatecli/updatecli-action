@@ -1,6 +1,9 @@
 name: Updatecli - Update
 on:
   workflow_dispatch:
+  schedule:
+    # Run daily at 03:00
+    - cron: "0 3 * * *"
   push:
     branches:
       - v2
