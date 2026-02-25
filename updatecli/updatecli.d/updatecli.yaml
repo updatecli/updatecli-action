@@ -1,5 +1,10 @@
 name: "deps: bump updatecli version"
 pipelineid: "updatecli_action_version"
+
+labels:
+  event: release
+  monitoring: enabled
+
 actions:
   default:
     kind: "github/pullrequest"
