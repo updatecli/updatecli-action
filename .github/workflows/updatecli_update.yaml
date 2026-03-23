@@ -17,10 +17,14 @@ jobs:
     steps:
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
+        with:
+          persist-credentials: false
+
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@4b17f4ea784de29f71f85f9bc4955402ba1ae53c" # v2.100.0
         with:
           version: "v0.114.0"
+
       - name: "Run updatecli only on monitored pipelines"
         run: updatecli compose apply --clean-git-branches=true --labels="monitoring:enabled" --experimental
         env:
@@ -30,6 +34,7 @@ jobs:
           UPDATECLI_UDASH_API_URL: ${{ secrets.UPDATECLI_UDASH_API_URL }}
           UPDATECLI_UDASH_ACCESS_TOKEN: ${{ secrets.UPDATECLI_UDASH_ACCESS_TOKEN }}
           UPDATECLI_UDASH_URL: ${{ secrets.UPDATECLI_UDASH_URL }}
+
       - name: "Run updatecli only on existing pipelines"
         run: updatecli compose apply --clean-git-branches=true --existing-only=true --experimental
         env:
