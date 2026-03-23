@@ -5,6 +5,9 @@ on:
   schedule:
     # Run at 12:00 every 14 days
     - cron: "0 12 */14 * *"
+
+permissions: {}
+
 jobs:
   updatecli:
     runs-on: ubuntu-latest
