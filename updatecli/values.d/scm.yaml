@@ -3,5 +3,5 @@ scm:
   user: updateclibot
   email: bot@updatecli.io
   owner: updatecli
-  branch: v2
+  branch: main
   repository: updatecli-action

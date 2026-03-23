@@ -4,7 +4,12 @@ on:
   push:
     # branches to consider in the event; optional, defaults to all
     branches:
-      - v2
+      - main
+
+permissions:
+  contents: write
+  pull-requests: read
+
 jobs:
   update_release_draft:
     runs-on: ubuntu-24.04
