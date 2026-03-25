@@ -2,10 +2,8 @@
 name: Updatecli Test
 on:
   pull_request:
-
 permissions:
   contents: read
-
 jobs:
   updatecli:
     runs-on: ubuntu-latest
@@ -14,12 +12,10 @@ jobs:
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
         with:
           persist-credentials: false
-
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@4b17f4ea784de29f71f85f9bc4955402ba1ae53c" # v2.100.0
         with:
-          version: "v0.114.0"
-
+          version: "v0.115.0"
       - name: "Test updatecli in dry-run mode"
         run: "updatecli compose diff"
         env:
