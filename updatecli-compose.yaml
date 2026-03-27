@@ -34,7 +34,7 @@ policies:
       - updatecli/values.d/githubaction.yaml
 
   - name: Update Updatecli version in GitHub action
-    policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.8.0@sha256:a4f4e4fcf0950a0eb359ed0518ef789272ea4db1e0bdba048a3772925b81a7aa
+    policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.8.1@sha256:48872bbf1a09cfff32ff5ffa07086c20b40d6888c19c36048b18f84bbdad37fe
     values:
       - updatecli/values.d/scm.yaml
       - updatecli/values.d/githubaction.yaml
