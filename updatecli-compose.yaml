@@ -17,7 +17,7 @@ policies:
       - updatecli/values.d/scm.yaml
 
   - name: NPM autodiscovery
-    policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.12.0@sha256:164a0269beaf327fc59fe477c249e2207773620bb5844c101f6f7bc48e0a9229
+    policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.12.1@sha256:ab02848169d584d7510ab974ec4a27309d9737068b1d888df6a8388a3dad26fc
     values:
       - updatecli/values.d/scm.yaml
       - updatecli/values.d/npm.yaml
