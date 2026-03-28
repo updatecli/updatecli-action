@@ -5,14 +5,6 @@ policies:
     values:
       - updatecli/values.d/scm.yaml
 
-  - name: Handle Nodejs version in githubaction
-    policy: ghcr.io/updatecli/policies/nodejs/githubaction:0.11.1@sha256:812c245adc1f20767ca912baf3087022c78e8153a3f27d43729dd8931864f8e3
-    values:
-      - updatecli/values.d/scm.yaml
-    valuesinline:
-      versionpattern: "~24"
-      automerge: true
-
   - name: Update Updatecli policies
     policy: ghcr.io/updatecli/policies/updatecli/autodiscovery:0.8.1@sha256:f8edda1a6cbf0d7274e2b847ede29fc4dc70dd5302ccb8575ae21b069cc0d8a0
     values:
@@ -43,12 +35,15 @@ policies:
       spec:
         ignoreversionconstraints: true
 
+  - name: Handle Nodejs version in githubaction
+    policy: ghcr.io/updatecli/policies/nodejs/githubaction:0.11.1@sha256:812c245adc1f20767ca912baf3087022c78e8153a3f27d43729dd8931864f8e3
+    values:
+      - updatecli/values.d/scm.yaml
+    valuesinline:
+      versionpattern: "~24"
+      automerge: true
+
   - name: Handle GitHub action version update
     policy: ghcr.io/updatecli/policies/autodiscovery/githubaction:0.4.1@sha256:869b676074f9fee7edd5d488140a12c3b09a5f8a175f12f26ea85a4f8bd0a9d1
     values:
       - updatecli/values.d/scm.yaml
-    valuesinline:
-      automerge: true
-      groupby: individual
-      spec:
-        ignoreversionconstraints: true
