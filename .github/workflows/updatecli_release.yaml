@@ -1,10 +1,11 @@
 ---
-name: Updatecli
+name: Updatecli - Update
 on:
+  updatecli-release:
   workflow_dispatch:
   schedule:
-    # Run at 12:00 every 14 days
-    - cron: "0 12 */14 * *"
+    # Run daily at 03:00
+    - cron: "0 3 * * *"
 permissions: {}
 jobs:
   updatecli:
@@ -18,8 +19,8 @@ jobs:
         uses: "updatecli/updatecli-action@2cc8e6d8e356d76b0280cdd03766c36596a0614e" # v3.0.0
         with:
           version: "v0.115.0"
-      - name: "Run updatecli"
-        run: updatecli compose apply --clean-git-branches=true --experimental
+      - name: "Run updatecli only on monitored pipelines"
+        run: updatecli compose apply --clean-git-branches=true --labels="release:updatecli" --experimental
         env:
           UPDATECLI_GITHUB_APP_CLIENT_ID: ${{ secrets.UPDATECLIBOT_APP_ID }}
           UPDATECLI_GITHUB_APP_PRIVATE_KEY: ${{ secrets.UPDATECLIBOT_APP_PRIVKEY }}
