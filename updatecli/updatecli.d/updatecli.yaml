@@ -2,8 +2,9 @@ name: "deps: bump updatecli version"
 pipelineid: "updatecli_action_version"
 
 labels:
-  event: release
-  monitoring: enabled
+  ecosystem: updatecli
+  monitor: active
+  release: updatecli
 
 actions:
   default:

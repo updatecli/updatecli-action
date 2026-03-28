@@ -1,5 +1,0 @@
-automerge: true
-groupby: individual
-
-spec:
-  ignoreversionconstraints: true
