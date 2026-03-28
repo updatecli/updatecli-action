@@ -1,3 +1,5 @@
+name: Default Update Policies
+
 policies:
   - name: Local Updatecli Website Policies
     config:
