@@ -4,7 +4,7 @@ import exec from '@actions/exec'
 import path from 'node:path'
 import fs from 'node:fs'
 
-const DEFAULT_VERSION = `v0.115.0`
+const DEFAULT_VERSION = `v0.116.0`
 
 // get the Updatecli version from the action inputs
 export async function getUpdatecliVersion() {
