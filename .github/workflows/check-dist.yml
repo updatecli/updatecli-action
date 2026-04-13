@@ -17,9 +17,7 @@ on:
     paths-ignore:
       - "**.md"
   workflow_dispatch:
-
 permissions: {}
-
 jobs:
   check-dist:
     runs-on: ubuntu-latest
@@ -27,19 +25,15 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Set Node.js 24.x
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: 24
           cache: npm
-
       - name: Install dependencies
         run: npm ci
-
       - name: Rebuild the dist/ directory
         run: npm run prepare
-
       - name: Compare the expected and actual dist/ directories
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
@@ -48,9 +42,8 @@ jobs:
             exit 1
           fi
         id: diff
-
       # If index.js was different than expected, upload the expected version as an artifact
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
           name: dist
