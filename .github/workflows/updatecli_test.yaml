@@ -15,7 +15,7 @@ jobs:
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@7aab164eed4ee3bb279611182ba1e62a3a867640" # v3.1.1
         with:
-          version: "v0.116.1"
+          version: "v0.116.2"
       - name: "Test updatecli in dry-run mode"
         run: "updatecli compose diff"
         env:
