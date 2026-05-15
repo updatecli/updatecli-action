@@ -20,7 +20,7 @@ jobs:
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@2c3221bc5f4499a99fec2c87d9de4a83cb30e990" # v3.1.3
         with:
-          version: "v0.116.3"
+          version: "v0.117.0"
       - name: "Run updatecli only on monitored pipelines"
         run: updatecli compose apply --clean-git-branches=true --labels="monitor:active" --experimental
         env:
