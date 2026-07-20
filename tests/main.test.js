@@ -1,6 +1,6 @@
 import path from 'node:path'
 import url from 'node:url'
-import {promises as fs} from 'node:fs'
+import { promises as fs } from 'node:fs'
 import {
   getUpdatecliVersion,
   getVersionFromFileContent,
@@ -9,7 +9,7 @@ import {
   updatecliVersion,
   updatecliExtract,
 } from 'src/main'
-import {ExitCode} from '@actions/core'
+import { ExitCode } from '@actions/core'
 
 const directory = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -19,7 +19,7 @@ const temporaryPath = path.join(directory, 'TEMP')
 process.env['RUNNER_TEMP'] = temporaryPath
 process.env['RUNNER_TOOL_CACHE'] = cachePath
 
-const DEFAULT_VERSION = `v0.114.0`
+const DEFAULT_VERSION = `v0.119.0`
 const versionWithoutV = DEFAULT_VERSION.slice(1)
 
 const originalPlatform = process.platform
@@ -258,6 +258,6 @@ describe('getUpdatecliVersion', () => {
 })
 
 afterAll(async () => {
-  await fs.rm(temporaryPath, {recursive: true})
-  await fs.rm(cachePath, {recursive: true})
+  await fs.rm(temporaryPath, { recursive: true })
+  await fs.rm(cachePath, { recursive: true })
 })
