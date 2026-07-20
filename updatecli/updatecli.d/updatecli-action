@@ -1,0 +1,50 @@
+name: "Update updatecli gha version used in documentation"
+pipelineid: "updatecli_gha"
+
+labels:
+  monitor: active
+  release: updatecli-action
+  kind: documentation
+
+actions:
+  default:
+    title: 'docs: bump updatecli action version to {{ source "latestVersion" }}'
+    kind: github/pullrequest
+    spec:
+      automerge: true
+      labels:
+        - chore
+        - skip-changelog
+        - documentation
+    scmid: default
+
+scms:
+  default:
+    kind: github
+    spec:
+      branch: "{{ .scm.branch }}"
+      email: "{{ .scm.email }}"
+      owner: "{{ .scm.owner }}"
+      user: "{{ .scm.user }}"
+      repository: "{{ .scm.repository }}"
+
+sources:
+  latestVersion:
+    name: Get latest updatecli action version
+    kind: githubrelease
+    spec:
+      owner: updatecli
+      repository: updatecli-action
+      versionfilter:
+        kind: semver
+
+targets:
+  version:
+    name: 'docs: update issue template with Updatecli gha version to {{ source "latestVersion" }}'
+    kind: file
+    spec:
+      file: README.md
+      matchpattern: "uses: updatecli/updatecli-action@(.*)"
+      replacepattern: 'uses: updatecli/updatecli-action@{{ source "latestVersion" }}'
+    scmid: default
+    sourceid: latestVersion
