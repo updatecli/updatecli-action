@@ -8,10 +8,11 @@ labels:
 
 actions:
   default:
-    title: 'docs: bump updatecli action version to {{ source "latestVersion" }}'
+    title: 'docs: bump updatecli action version to {{ source "version-updatecli-action" }}'
     kind: github/pullrequest
     spec:
-      automerge: true
+      merge:
+        strategy: auto
       labels:
         - chore
         - skip-changelog
@@ -29,7 +30,7 @@ scms:
       repository: "{{ .scm.repository }}"
 
 sources:
-  latestVersion:
+  version-updatecli-action:
     name: Get latest updatecli action version
     kind: githubrelease
     spec:
@@ -38,13 +39,32 @@ sources:
       versionfilter:
         kind: semver
 
+  version-actions-checkout:
+    name: Get latest actions/checkout version
+    kind: githubrelease
+    spec:
+      owner: actions
+      repository: checkout
+      versionfilter:
+        kind: semver
+
 targets:
-  version:
-    name: 'docs: update issue template with Updatecli gha version to {{ source "latestVersion" }}'
+  version-updatecli-action:
+    name: 'docs: update issue template with Updatecli gha version to {{ source "version-updatecli-action" }}'
+    disablesourceinput: true
     kind: file
     spec:
       file: README.md
       matchpattern: "uses: updatecli/updatecli-action@(.*)"
-      replacepattern: 'uses: updatecli/updatecli-action@{{ source "latestVersion" }}'
+      replacepattern: 'uses: updatecli/updatecli-action@{{ source "version-updatecli-action" }}'
     scmid: default
-    sourceid: latestVersion
+
+  version-actions-checkout:
+    name: 'docs: update issue template with actions/checkout gha version to {{ source "version-actions-checkout" }}'
+    disablesourceinput: true
+    kind: file
+    spec:
+      file: README.md
+      matchpattern: "uses: actions/checkout@(.*)"
+      replacepattern: 'uses: actions/checkout@{{ source "version-actions-checkout" }}'
+    scmid: default
