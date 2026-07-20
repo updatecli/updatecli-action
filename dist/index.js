@@ -6668,8 +6668,8 @@ const DEFAULT_VERSION = `v0.119.0`
 
 // get the Updatecli version from the action inputs
 async function getUpdatecliVersion() {
-  const versionInput = core.getInput('version', { required: false })
-  const versionFile = core.getInput('version-file', { required: false })
+  const versionInput = core.getInput('version', {required: false})
+  const versionFile = core.getInput('version-file', {required: false})
 
   let version = versionInput
   if (!versionInput && !versionFile) {
@@ -6779,10 +6779,10 @@ async function run() {
   try {
     core.warning(
       'You are using a deprecated branch-based reference (v2) of this action. ' +
-      'Please update your workflow to use a tagged release instead, e.g. ' +
-      '`uses: updatecli/updatecli-action@v3.0.0`. ' +
-      'Branch references are not recommended as they may receive breaking changes without notice. ' +
-      'See https://github.com/updatecli/updatecli-action/releases for the latest release.'
+        'Please update your workflow to use a tagged release instead, e.g. ' +
+        '`uses: updatecli/updatecli-action@v3.0.0`. ' +
+        'Branch references are not recommended as they may receive breaking changes without notice. ' +
+        'See https://github.com/updatecli/updatecli-action/releases for the latest release.'
     )
     const version = await getUpdatecliVersion()
     await updatecliDownload(version)
