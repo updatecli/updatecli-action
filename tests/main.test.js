@@ -1,6 +1,6 @@
 import path from 'node:path'
 import url from 'node:url'
-import { promises as fs } from 'node:fs'
+import {promises as fs} from 'node:fs'
 import {
   getUpdatecliVersion,
   getVersionFromFileContent,
@@ -9,7 +9,7 @@ import {
   updatecliVersion,
   updatecliExtract,
 } from 'src/main'
-import { ExitCode } from '@actions/core'
+import {ExitCode} from '@actions/core'
 
 const directory = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -258,6 +258,6 @@ describe('getUpdatecliVersion', () => {
 })
 
 afterAll(async () => {
-  await fs.rm(temporaryPath, { recursive: true })
-  await fs.rm(cachePath, { recursive: true })
+  await fs.rm(temporaryPath, {recursive: true})
+  await fs.rm(cachePath, {recursive: true})
 })
