@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "* [Usage](#usage)   * [Workflow](#workflow) * [License](#license)",
   "main": "index.js",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "lint": "eslint .",
     "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
