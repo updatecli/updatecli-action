@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Updatecli in the runner
-        uses: updatecli/updatecli-action@main
+        uses: updatecli/updatecli-action@v3.4.0
 
       - name: Run Updatecli in Dry Run mode
         run: updatecli diff
