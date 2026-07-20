@@ -6777,6 +6777,13 @@ async function updatecliVersion() {
 
 async function run() {
   try {
+    core.warning(
+      'You are using a deprecated branch-based reference (v2) of this action. ' +
+        'Please update your workflow to use a tagged release instead, e.g. ' +
+        '`uses: updatecli/updatecli-action@v3`. ' +
+        'Branch references are not recommended as they may receive breaking changes without notice. ' +
+        'See https://github.com/updatecli/updatecli-action/releases for the latest release.'
+    )
     const version = await getUpdatecliVersion()
     await updatecliDownload(version)
     await updatecliVersion()
