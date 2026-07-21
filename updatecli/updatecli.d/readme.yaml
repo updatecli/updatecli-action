@@ -1,4 +1,4 @@
-name: "Update updatecli gha version used in documentation"
+name: "Update README installation instruction"
 pipelineid: "updatecli_gha"
 
 labels:
@@ -8,7 +8,7 @@ labels:
 
 actions:
   default:
-    title: 'docs: bump updatecli action version to {{ source "version-updatecli-action" }}'
+    title: 'docs: Update README installation instruction'
     kind: github/pullrequest
     spec:
       merge:
