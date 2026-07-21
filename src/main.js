@@ -4,7 +4,7 @@ import exec from '@actions/exec'
 import path from 'node:path'
 import fs from 'node:fs'
 
-const DEFAULT_VERSION = `v0.114.0`
+const DEFAULT_VERSION = `v0.119.0`
 
 // get the Updatecli version from the action inputs
 export async function getUpdatecliVersion() {
@@ -117,6 +117,13 @@ export async function updatecliVersion() {
 
 export async function run() {
   try {
+    core.warning(
+      'You are using a deprecated branch-based reference (v2) of this action. ' +
+        'Please update your workflow to use a tagged release instead, e.g. ' +
+        '`uses: updatecli/updatecli-action@v3.0.0`. ' +
+        'Branch references are not recommended as they may receive breaking changes without notice. ' +
+        'See https://github.com/updatecli/updatecli-action/releases for the latest release.'
+    )
     const version = await getUpdatecliVersion()
     await updatecliDownload(version)
     await updatecliVersion()
