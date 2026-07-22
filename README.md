@@ -2,6 +2,7 @@
 
 * [Usage](#usage)
   * [Workflow](#workflow)
+* [Deprecation](#deprecation) 
 * [License](#license)
 
 ## Usage
@@ -10,7 +11,7 @@ Install Updatecli for GitHub Action
 
 **Options**
 
-- `version`: Specify the Updatecli version to install. Accepted values are any valid releases such as `v0.86.1`.
+- `version`: Specify the Updatecli version to install. Accepted values are any valid releases such as `v0.118.0`.
 
 - `version-file`: The path to a file containing updatecli version. Supported file types are `.updatecli-version` and `.tool-versions`. See more details in [about version-file](#Updatecli-version-file).
 
@@ -48,10 +49,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7.0.1
 
       - name: Install Updatecli in the runner
-        uses: updatecli/updatecli-action@v2
+        uses: updatecli/updatecli-action@v3.4.0
 
       - name: Run Updatecli in Dry Run mode
         run: updatecli diff
@@ -65,6 +66,36 @@ jobs:
 ```
 
 WARNING: Dont enable --debug mode in Github Action as it may leak information.
+
+## Deprecation
+
+> [!IMPORTANT]  
+> The branch v1 and v2 are deprecated and will be remove soon.
+> You should use GitHub action version instead (or track the main branch if you really want to).
+> You can migrate to the latest GitHub action version using the following Updatecli policy:
+
+.updatecli-compose.yaml
+```
+# export UPDATECLI_GITHUB_TOKEN=<insert PAT>
+# export UPDATECLI_GITHUB_USERNAME=<insert username>
+# updatecli compose diff --file updatecli-compose.yaml
+# updatecli compose apply --file updatecli-compose.yaml
+
+valuesinline:
+  scm:
+    enabled: true
+    kind: githubsearch
+    search: |
+      org:<replace with your GitHub organization>
+      archived:false
+    branch: "^main$|^master$" # branch accept regular expression
+    email: <email associatedi with the git commits>
+    limit: 0 # zero means no repository limit
+
+policies:
+  - name: Update Updatecli GitHub action version
+    policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.8.1
+```
 
 ## License
 

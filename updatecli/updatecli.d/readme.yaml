@@ -1,0 +1,70 @@
+name: "Update README installation instruction"
+pipelineid: "updatecli_gha"
+
+labels:
+  monitor: active
+  release: updatecli-action
+  kind: documentation
+
+actions:
+  default:
+    title: 'docs: Update README installation instruction'
+    kind: github/pullrequest
+    spec:
+      merge:
+        strategy: auto
+      labels:
+        - chore
+        - skip-changelog
+        - documentation
+    scmid: default
+
+scms:
+  default:
+    kind: github
+    spec:
+      branch: "{{ .scm.branch }}"
+      email: "{{ .scm.email }}"
+      owner: "{{ .scm.owner }}"
+      user: "{{ .scm.user }}"
+      repository: "{{ .scm.repository }}"
+
+sources:
+  version-updatecli-action:
+    name: Get latest updatecli action version
+    kind: githubrelease
+    spec:
+      owner: updatecli
+      repository: updatecli-action
+      versionfilter:
+        kind: semver
+
+  version-actions-checkout:
+    name: Get latest actions/checkout version
+    kind: githubrelease
+    spec:
+      owner: actions
+      repository: checkout
+      versionfilter:
+        kind: semver
+
+targets:
+  version-updatecli-action:
+    name: 'docs: update issue template with Updatecli gha version to {{ source "version-updatecli-action" }}'
+    disablesourceinput: true
+    kind: file
+    spec:
+      file: README.md
+      matchpattern: "uses: updatecli/updatecli-action@(.*)"
+      replacepattern: 'uses: updatecli/updatecli-action@{{ source "version-updatecli-action" }}'
+    scmid: default
+
+  version-actions-checkout:
+    name: 'docs: update issue template with actions/checkout gha version to {{ source "version-actions-checkout" }}'
+    disablesourceinput: true
+    kind: file
+    spec:
+      file: README.md
+      matchpattern: "uses: actions/checkout@(.*)"
+      replacepattern: 'uses: actions/checkout@{{ source "version-actions-checkout" }}'
+    scmid: default
