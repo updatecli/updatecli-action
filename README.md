@@ -40,6 +40,10 @@ on:
     # Run once a day
     - cron: '0 0 * * *'
 
+# Please note that you need to allow Github Action tokens to
+# create pull requests in the repository settings, too:
+# Go to the Repository Settings → "Actions" → "General" → "Workflow permissions"
+# and enable "Allow GitHub Actions to create and approve pull requests"
 permissions:
   contents: write
   pull-requests: write
@@ -64,6 +68,13 @@ jobs:
         env:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+Please check whether you need to allow Github Action tokens to create pull
+requests in the repository settings in addition to granting write permissions in
+the workflow. This is [required by GitHub in new repositories](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#preventing-github-actions-from-creating-or-approving-pull-requests).
+
+Go to the Repository Settings → "Actions" → "General" → "Workflow permissions"
+and enable "Allow GitHub Actions to create and approve pull requests"
 
 WARNING: Dont enable --debug mode in Github Action as it may leak information.
 
