@@ -17,7 +17,7 @@ jobs:
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@d422ba543720d01a96d4c3e3ab8544cc188cd711" # v3.5.0
         with:
-          version: "v0.120.0"
+          version: "v0.120.1"
       - name: "Run updatecli"
         run: updatecli compose apply --clean-git-branches=true --experimental
         env:
