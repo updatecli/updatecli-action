@@ -1,9 +1,9 @@
 ---
 name: Updatecli
 on:
+  release:
   workflow_dispatch:
   schedule:
-    # Run at 12:00 every 14 days
     - cron: "0 12 */14 * *"
 permissions: {}
 jobs:
@@ -18,6 +18,11 @@ jobs:
         uses: "updatecli/updatecli-action@41b9c8d707830a9daebaeaa84c1b62d60b779564" # v3.6.0
         with:
           version: "v0.120.1"
+      - name: "Set up Node"
+        uses: "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020" # v7.0.0
+        with:
+          node-version-file: "package.json"
+        id: node
       - name: "Run updatecli"
         run: updatecli compose apply --clean-git-branches=true --experimental
         env:
