@@ -2,16 +2,25 @@
 name: Updatecli - Update
 on:
   workflow_dispatch:
-  schedule:
-    # Run daily at 03:00
-    - cron: "0 3 * * *"
   push:
     branches:
       - main
+  schedule:
+    - cron: "0 3 * * *"
 permissions: {}
 jobs:
   updatecli:
+    name: "Updatecli - ${{ matrix.target_name }}"
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - target_name: "existing pipelines"
+            apply_args: "--existing-only=true"
+          - target_name: "monitored pipelines"
+            apply_args: "--labels=monitor:active"
     steps:
       - name: "Checkout"
         uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
@@ -21,17 +30,13 @@ jobs:
         uses: "updatecli/updatecli-action@41b9c8d707830a9daebaeaa84c1b62d60b779564" # v3.6.0
         with:
           version: "v0.120.1"
-      - name: "Run updatecli only on monitored pipelines"
-        run: updatecli compose apply --clean-git-branches=true --labels="monitor:active" --experimental
-        env:
-          UPDATECLI_GITHUB_APP_CLIENT_ID: ${{ secrets.UPDATECLIBOT_APP_ID }}
-          UPDATECLI_GITHUB_APP_PRIVATE_KEY: ${{ secrets.UPDATECLIBOT_APP_PRIVKEY }}
-          UPDATECLI_GITHUB_APP_INSTALLATION_ID: ${{ secrets.UPDATECLIBOT_APP_INSTALLATION_ID }}
-          UPDATECLI_UDASH_API_URL: ${{ secrets.UPDATECLI_UDASH_API_URL }}
-          UPDATECLI_UDASH_ACCESS_TOKEN: ${{ secrets.UPDATECLI_UDASH_ACCESS_TOKEN }}
-          UPDATECLI_UDASH_URL: ${{ secrets.UPDATECLI_UDASH_URL }}
-      - name: "Run updatecli only on existing pipelines"
-        run: updatecli compose apply --clean-git-branches=true --existing-only=true --experimental
+      - name: "Set up Node"
+        uses: "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020" # v7.0.0
+        with:
+          node-version-file: "package.json"
+        id: node
+      - name: "Run updatecli"
+        run: updatecli compose apply --clean-git-branches=true ${{ matrix.apply_args }} --experimental
         env:
           UPDATECLI_GITHUB_APP_CLIENT_ID: ${{ secrets.UPDATECLIBOT_APP_ID }}
           UPDATECLI_GITHUB_APP_PRIVATE_KEY: ${{ secrets.UPDATECLIBOT_APP_PRIVKEY }}
