@@ -1,16 +1,16 @@
 name: Default Update Policies
 
+values:
+  - updatecli/values.d/scm.yaml
+
 policies:
-  - name: Local Updatecli Website Policies
+  - name: Local Policies
+    id: local
     config:
       - updatecli/updatecli.d/
-    values:
-      - updatecli/values.d/scm.yaml
 
   - name: Update Updatecli policies
     policy: ghcr.io/updatecli/policies/updatecli/autodiscovery:0.8.1@sha256:f8edda1a6cbf0d7274e2b847ede29fc4dc70dd5302ccb8575ae21b069cc0d8a0
-    values:
-      - updatecli/values.d/scm.yaml
     valuesinline:
       pipeline:
         labels:
@@ -19,8 +19,6 @@ policies:
 
   - name: Handle Updatecli version in GitHub action
     policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.9.1@sha256:49c07d724474ff7976f7ad5ecb0db9aa46448b456d08f82717913b403a0f02d8
-    values:
-      - updatecli/values.d/scm.yaml
     valuesinline:
       pipeline:
         labels:
@@ -29,8 +27,6 @@ policies:
 
   - name: NPM autodiscovery
     policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.12.1@sha256:ab02848169d584d7510ab974ec4a27309d9737068b1d888df6a8388a3dad26fc
-    values:
-      - updatecli/values.d/scm.yaml
     valuesinline:
       automerge: true
       groupby: individual
@@ -39,16 +35,12 @@ policies:
 
   - name: Handle Nodejs version in githubaction
     policy: ghcr.io/updatecli/policies/nodejs/githubaction:0.11.1@sha256:812c245adc1f20767ca912baf3087022c78e8153a3f27d43729dd8931864f8e3
-    values:
-      - updatecli/values.d/scm.yaml
     valuesinline:
       versionpattern: "~24"
       automerge: true
 
   - name: Handle GitHub action version update
     policy: ghcr.io/updatecli/policies/autodiscovery/githubaction:0.4.1@sha256:869b676074f9fee7edd5d488140a12c3b09a5f8a175f12f26ea85a4f8bd0a9d1
-    values:
-      - updatecli/values.d/scm.yaml
       
   - name: Configure Updatecli workflows
     id: updatecli
@@ -71,4 +63,3 @@ policies:
           ecosystem: "updatecli"
           policy: scaffold
           monitor: active
-
