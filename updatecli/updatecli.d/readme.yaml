@@ -48,14 +48,33 @@ sources:
       versionfilter:
         kind: semver
 
+  version-policy-githubaction-scaffold:
+    name: Get latest updatecli/githubaction/scaffold policy version
+    kind: dockerimage
+    spec:
+      image: ghcr.io/updatecli/policies/updatecli/githubaction/scaffold
+      versionfilter:
+        kind: semver
+
+  version-policy-githubaction:
+    name: Get latest updatecli/githubaction policy version
+    kind: dockerimage
+    spec:
+      image: ghcr.io/updatecli/policies/updatecli/githubaction
+      versionfilter:
+        kind: semver
+
 targets:
+  # matchpattern captures a bare version (vX.Y.Z or X.Y.Z) rather than the rest of the
+  # line, so a tracked reference does not have to sit at the end of its line.
+  # A digest pinned reference (:X.Y.Z@sha256:...) needs its own pattern.
   version-updatecli-action:
     name: 'docs: update issue template with Updatecli gha version to {{ source "version-updatecli-action" }}'
     disablesourceinput: true
     kind: file
     spec:
       file: README.md
-      matchpattern: "uses: updatecli/updatecli-action@(.*)"
+      matchpattern: 'uses: updatecli/updatecli-action@(v?\d+\.\d+\.\d+)'
       replacepattern: 'uses: updatecli/updatecli-action@{{ source "version-updatecli-action" }}'
     scmid: default
 
@@ -65,6 +84,26 @@ targets:
     kind: file
     spec:
       file: README.md
-      matchpattern: "uses: actions/checkout@(.*)"
+      matchpattern: 'uses: actions/checkout@(v?\d+\.\d+\.\d+)'
       replacepattern: 'uses: actions/checkout@{{ source "version-actions-checkout" }}'
+    scmid: default
+
+  version-policy-githubaction-scaffold:
+    name: 'docs: update updatecli/githubaction/scaffold policy version to {{ source "version-policy-githubaction-scaffold" }}'
+    disablesourceinput: true
+    kind: file
+    spec:
+      file: README.md
+      matchpattern: 'updatecli/githubaction/scaffold:(v?\d+\.\d+\.\d+)'
+      replacepattern: 'updatecli/githubaction/scaffold:{{ source "version-policy-githubaction-scaffold" }}'
+    scmid: default
+
+  version-policy-githubaction:
+    name: 'docs: update updatecli/githubaction policy version to {{ source "version-policy-githubaction" }}'
+    disablesourceinput: true
+    kind: file
+    spec:
+      file: README.md
+      matchpattern: 'updatecli/githubaction:(v?\d+\.\d+\.\d+)'
+      replacepattern: 'updatecli/githubaction:{{ source "version-policy-githubaction" }}'
     scmid: default
