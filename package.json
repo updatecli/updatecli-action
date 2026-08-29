@@ -53,6 +53,6 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-unicorn": "^48.0.1",
     "jest": "^30.5.0",
-    "js-yaml": "^5.4.0"
+    "js-yaml": "^5.4.1"
   }
 }
