@@ -41,10 +41,10 @@ policies:
 
   - name: Handle GitHub action version update
     policy: ghcr.io/updatecli/policies/autodiscovery/githubaction:0.4.1@sha256:869b676074f9fee7edd5d488140a12c3b09a5f8a175f12f26ea85a4f8bd0a9d1
-      
+
   - name: Configure Updatecli workflows
     id: updatecli
-    policy: ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.1.0@sha256:7cf583e517ab329a41e0b15801557a60c363a3fef01d7c77f768b90af52ac583
+    policy: ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.1.1@sha256:121dfef5a33bc5cad4eced09ae1fd2305319ce2fd6d23ff661b5c99d11d0d9d2
     valuesinline:
       gha:
         npm:
