@@ -84,8 +84,6 @@ jobs:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-WARNING: Dont enable --debug mode in Github Action as it may leak information.
-=======
 > [!WARNING]
 > Do not enable `--debug` mode in GitHub Actions as it may leak information.
 
@@ -192,7 +190,6 @@ With this configuration, the policy installs the three workflows described above
 * `updatecli_test.yaml` runs Updatecli in dry run mode on every pull request
 
 More Updatecli policies are available on [updatecli/policies](https://github.com/updatecli/policies).
->>>>>>> 8d9036c (doc: update documentation)
 
 ## Deprecation
 
