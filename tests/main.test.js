@@ -5,6 +5,7 @@ import {
   getExpectedChecksum,
   getUpdatecliVersion,
   getVersionFromFileContent,
+  isPreChecksumsVersion,
   run,
   updatecliDownload,
   updatecliVersion,
@@ -213,6 +214,12 @@ describe('getExpectedChecksum', () => {
     expect(checksum).toBeUndefined()
   }, 10_000)
 
+  it('should throw if a recent release has no checksums.txt', async () => {
+    await expect(
+      getExpectedChecksum('v99.0.0', 'updatecli_Linux_x86_64.tar.gz')
+    ).rejects.toThrow(/404/)
+  }, 10_000)
+
   it('should throw if the archive is not listed', async () => {
     await expect(
       getExpectedChecksum('v0.122.1', 'updatecli_foo.tar.gz')
@@ -220,6 +227,21 @@ describe('getExpectedChecksum', () => {
       `"No checksum found for updatecli_foo.tar.gz in checksums.txt"`
     )
   }, 10_000)
+})
+
+describe('isPreChecksumsVersion', () => {
+  it.each([
+    ['v0.10.0', true],
+    ['v0.40.1', true],
+    ['0.39.9', true],
+    ['v0.40.2', false],
+    ['v0.41.0', false],
+    ['v0.122.1', false],
+    ['v1.0.0', false],
+    ['latest', false],
+  ])('%s -> %s', (version, expected) => {
+    expect(isPreChecksumsVersion(version)).toBe(expected)
+  })
 })
 
 describe('verifyChecksum', () => {

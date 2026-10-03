@@ -7,6 +7,8 @@ import crypto from 'node:crypto'
 
 const DEFAULT_VERSION = `v0.122.1`
 const RELEASE_URL = 'https://github.com/updatecli/updatecli/releases/download'
+// first Updatecli release publishing a checksums.txt
+const FIRST_CHECKSUMS_VERSION = [0, 40, 2]
 
 // get the Updatecli version from the action inputs
 export async function getUpdatecliVersion() {
@@ -38,8 +40,24 @@ export async function updatecliExtract(downloadPath, downloadUrl) {
   throw new Error(`Unsupported archive type: ${downloadUrl}`)
 }
 
+// whether a release predates checksums.txt; unparseable versions are treated
+// as recent so that a missing checksums.txt fails instead of being skipped
+export function isPreChecksumsVersion(version) {
+  const match = /^v?(\d+)\.(\d+)\.(\d+)/.exec(version)
+  if (!match) {
+    return false
+  }
+  const parts = match.slice(1).map(Number)
+  for (const [index, part] of parts.entries()) {
+    if (part !== FIRST_CHECKSUMS_VERSION[index]) {
+      return part < FIRST_CHECKSUMS_VERSION[index]
+    }
+  }
+  return false
+}
+
 // get the expected sha256 of an archive from the release checksums.txt
-// returns undefined if the release doesn't publish one (versions before ~v0.60.0)
+// returns undefined only for releases older than v0.40.2, which don't publish one
 export async function getExpectedChecksum(version, archive) {
   let checksumsPath
   try {
@@ -47,7 +65,11 @@ export async function getExpectedChecksum(version, archive) {
       `${RELEASE_URL}/${version}/checksums.txt`
     )
   } catch (error) {
-    if (error instanceof tool.HTTPError && error.httpStatusCode === 404) {
+    if (
+      error instanceof tool.HTTPError &&
+      error.httpStatusCode === 404 &&
+      isPreChecksumsVersion(version)
+    ) {
       core.warning(
         `No checksums.txt published for Updatecli ${version}, skipping checksum verification`
       )
