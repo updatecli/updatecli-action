@@ -1,10 +1,14 @@
-import core from '@actions/core'
-import tool from '@actions/tool-cache'
-import exec from '@actions/exec'
+import * as core from '@actions/core'
+import * as tool from '@actions/tool-cache'
+import * as exec from '@actions/exec'
 import path from 'node:path'
 import fs from 'node:fs'
+import crypto from 'node:crypto'
 
 const DEFAULT_VERSION = `v0.122.1`
+const RELEASE_URL = 'https://github.com/updatecli/updatecli/releases/download'
+// first Updatecli release publishing a checksums.txt
+const FIRST_CHECKSUMS_VERSION = [0, 40, 2]
 
 // get the Updatecli version from the action inputs
 export async function getUpdatecliVersion() {
@@ -29,11 +33,71 @@ export async function getUpdatecliVersion() {
 export async function updatecliExtract(downloadPath, downloadUrl) {
   if (downloadUrl.endsWith('.tar.gz')) {
     return tool.extractTar(downloadPath)
-  } else if (downloadUrl.endsWith('.zip')) {
-    return tool.extractZip(downloadPath)
-  } else {
-    throw new Error(`Unsupported archive type: ${downloadUrl}`)
   }
+  if (downloadUrl.endsWith('.zip')) {
+    return tool.extractZip(downloadPath)
+  }
+  throw new Error(`Unsupported archive type: ${downloadUrl}`)
+}
+
+// whether a release predates checksums.txt; unparsable versions are treated
+// as recent so that a missing checksums.txt fails instead of being skipped
+export function isPreChecksumsVersion(version) {
+  const match = /^v?(\d+)\.(\d+)\.(\d+)/.exec(version)
+  if (!match) {
+    return false
+  }
+  const parts = match.slice(1).map(Number)
+  for (const [index, part] of parts.entries()) {
+    if (part !== FIRST_CHECKSUMS_VERSION[index]) {
+      return part < FIRST_CHECKSUMS_VERSION[index]
+    }
+  }
+  return false
+}
+
+// get the expected sha256 of an archive from the release checksums.txt
+// returns undefined only for releases older than v0.40.2, which don't publish one
+export async function getExpectedChecksum(version, archive) {
+  let checksumsPath
+  try {
+    checksumsPath = await tool.downloadTool(
+      `${RELEASE_URL}/${version}/checksums.txt`
+    )
+  } catch (error) {
+    if (
+      error instanceof tool.HTTPError &&
+      error.httpStatusCode === 404 &&
+      isPreChecksumsVersion(version)
+    ) {
+      core.warning(
+        `No checksums.txt published for Updatecli ${version}, skipping checksum verification`
+      )
+      return
+    }
+    throw error
+  }
+
+  const content = await fs.promises.readFile(checksumsPath, 'utf8')
+  for (const line of content.split('\n')) {
+    const [checksum, name] = line.trim().split(/\s+/, 2)
+    // sha256sum prefixes the file name with '*' in binary mode
+    if (name?.replace(/^\*/, '') === archive) {
+      return checksum.toLowerCase()
+    }
+  }
+  throw new Error(`No checksum found for ${archive} in checksums.txt`)
+}
+
+export async function verifyChecksum(filePath, expected) {
+  const content = await fs.promises.readFile(filePath)
+  const actual = crypto.createHash('sha256').update(content).digest('hex')
+  if (actual !== expected) {
+    throw new Error(
+      `Checksum mismatch for ${filePath}: expected ${expected}, got ${actual}`
+    )
+  }
+  core.info(`Checksum verified: ${actual}`)
 }
 
 // download Updatecli retrieve updatecli binary from Github Release
@@ -42,35 +106,19 @@ export async function updatecliDownload(version) {
     throw new Error(`No supported version was found`)
   }
   const updatecliPackages = [
-    {
-      arch: 'x64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_x86_64.tar.gz`,
-    },
-    {
-      arch: 'arm64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_arm64.tar.gz`,
-    },
-    {
-      arch: 'x64',
-      platform: 'win32',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Windows_x86_64.zip`,
-    },
-    {
-      arch: 'arm64',
-      platform: 'win32',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Windows_arm64.zip`,
-    },
+    {arch: 'x64', platform: 'linux', archive: 'updatecli_Linux_x86_64.tar.gz'},
+    {arch: 'arm64', platform: 'linux', archive: 'updatecli_Linux_arm64.tar.gz'},
+    {arch: 'x64', platform: 'win32', archive: 'updatecli_Windows_x86_64.zip'},
+    {arch: 'arm64', platform: 'win32', archive: 'updatecli_Windows_arm64.zip'},
     {
       arch: 'x64',
       platform: 'darwin',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Darwin_x86_64.tar.gz`,
+      archive: 'updatecli_Darwin_x86_64.tar.gz',
     },
     {
       arch: 'arm64',
       platform: 'darwin',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Darwin_arm64.tar.gz`,
+      archive: 'updatecli_Darwin_arm64.tar.gz',
     },
   ]
 
@@ -83,15 +131,37 @@ export async function updatecliDownload(version) {
     )
   }
 
-  core.info(`Downloading ${updatecliPackage.url}`)
-  const downloadPath = await tool.downloadTool(updatecliPackage.url)
+  const cachedTool = tool.find('updatecli', version, process.arch)
+  if (cachedTool) {
+    core.info(`Found Updatecli ${version} in the tool cache: ${cachedTool}`)
+    core.addPath(cachedTool)
+    return
+  }
+
+  const url = `${RELEASE_URL}/${version}/${updatecliPackage.archive}`
+  core.info(`Downloading ${url}`)
+  const downloadPath = await tool.downloadTool(url)
+
+  const expectedChecksum = await getExpectedChecksum(
+    version,
+    updatecliPackage.archive
+  )
+  if (expectedChecksum) {
+    await verifyChecksum(downloadPath, expectedChecksum)
+  }
 
   core.debug(`Extracting file ${downloadPath} ...`)
-  const updatecliExtractedFolder = await updatecliExtract(
-    downloadPath,
-    updatecliPackage.url
-  )
+  const updatecliExtractedFolder = await updatecliExtract(downloadPath, url)
   core.debug(`Extracted file to ${updatecliExtractedFolder} ...`)
+
+  // chmod before caching: cacheDir marks the entry complete, and a cached
+  // entry is reused as-is by tool.find on later runs
+  if (process.platform == 'linux' || process.platform == 'darwin') {
+    await exec.exec('chmod', [
+      '+x',
+      path.join(updatecliExtractedFolder, 'updatecli'),
+    ])
+  }
 
   core.debug('Adding to the cache ...')
   const cachedPath = await tool.cacheDir(
@@ -100,10 +170,6 @@ export async function updatecliDownload(version) {
     version,
     process.arch
   )
-
-  if (process.platform == 'linux' || process.platform == 'darwin') {
-    await exec.exec('chmod', ['+x', path.join(cachedPath, 'updatecli')])
-  }
 
   core.addPath(cachedPath)
 

@@ -2,12 +2,15 @@ import path from 'node:path'
 import url from 'node:url'
 import {promises as fs} from 'node:fs'
 import {
+  getExpectedChecksum,
   getUpdatecliVersion,
   getVersionFromFileContent,
+  isPreChecksumsVersion,
   run,
   updatecliDownload,
   updatecliVersion,
   updatecliExtract,
+  verifyChecksum,
 } from 'src/main'
 import {ExitCode} from '@actions/core'
 
@@ -26,21 +29,32 @@ const originalPlatform = process.platform
 const originalArch = process.arch
 
 const restorePlatformArch = () => {
-  Object.defineProperty(process, 'platform', {
-    value: originalPlatform,
-  })
-  Object.defineProperty(process, 'arch', {
-    value: originalArch,
+  Object.defineProperties(process, {
+    platform: {
+      value: originalPlatform,
+    },
+    arch: {
+      value: originalArch,
+    },
   })
 }
 const fakePlatformArch = (fakePlatform, fakeArch) => {
-  Object.defineProperty(process, 'platform', {
-    value: fakePlatform,
-  })
-  Object.defineProperty(process, 'arch', {
-    value: fakeArch,
+  Object.defineProperties(process, {
+    platform: {
+      value: fakePlatform,
+    },
+    arch: {
+      value: fakeArch,
+    },
   })
 }
+
+// Updatecli is looked up in the tool cache before downloading,
+// so each test starts from an empty cache
+beforeEach(async () => {
+  await fs.rm(cachePath, {recursive: true, force: true})
+  await fs.mkdir(temporaryPath, {recursive: true})
+})
 
 describe('main', () => {
   it('run', async () => {
@@ -56,7 +70,6 @@ describe('main', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     expect(process.exitCode).toBe(ExitCode.Success)
-    await fs.unlink(file)
   }, 10_000)
 
   it('run with empty values', async () => {
@@ -136,7 +149,6 @@ describe('updatecliDownload', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     restorePlatformArch()
-    await fs.unlink(file)
   }, 10_000)
 
   it('windows should download', async () => {
@@ -152,7 +164,6 @@ describe('updatecliDownload', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     restorePlatformArch()
-    await fs.unlink(file)
   }, 10_000)
 
   it('darwin should download', async () => {
@@ -168,8 +179,90 @@ describe('updatecliDownload', () => {
     const fileStat = await fs.stat(file)
     expect(fileStat.isFile()).toBe(true)
     restorePlatformArch()
-    await fs.unlink(file)
   }, 10_000)
+})
+
+describe('updatecliDownload cache', () => {
+  it('should use the tool cache instead of downloading', async () => {
+    // this version doesn't exist on GitHub, so downloading it would fail
+    const version = 'v0.0.1-cached'
+    const toolPath = path.join(cachePath, 'updatecli', '0.0.1-cached')
+    await fs.mkdir(path.join(toolPath, process.arch), {recursive: true})
+    await fs.writeFile(path.join(toolPath, process.arch, 'updatecli'), '')
+    await fs.writeFile(path.join(toolPath, `${process.arch}.complete`), '')
+
+    await expect(updatecliDownload(version)).resolves.toBeUndefined()
+  })
+})
+
+describe('getExpectedChecksum', () => {
+  it('should return the checksum from checksums.txt', async () => {
+    const checksum = await getExpectedChecksum(
+      'v0.122.1',
+      'updatecli_Linux_x86_64.tar.gz'
+    )
+    expect(checksum).toBe(
+      '8ca11bfa6dae1c0c3aba5df00d7d40ff23e2dc979c966b8d3fc715470b68a0dc'
+    )
+  }, 10_000)
+
+  it('should return undefined if the release has no checksums.txt', async () => {
+    const checksum = await getExpectedChecksum(
+      'v0.10.0',
+      'updatecli_Linux_x86_64.tar.gz'
+    )
+    expect(checksum).toBeUndefined()
+  }, 10_000)
+
+  it('should throw if a recent release has no checksums.txt', async () => {
+    await expect(
+      getExpectedChecksum('v99.0.0', 'updatecli_Linux_x86_64.tar.gz')
+    ).rejects.toThrow(/404/)
+  }, 10_000)
+
+  it('should throw if the archive is not listed', async () => {
+    await expect(
+      getExpectedChecksum('v0.122.1', 'updatecli_foo.tar.gz')
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"No checksum found for updatecli_foo.tar.gz in checksums.txt"`
+    )
+  }, 10_000)
+})
+
+describe('isPreChecksumsVersion', () => {
+  it.each([
+    ['v0.10.0', true],
+    ['v0.40.1', true],
+    ['0.39.9', true],
+    ['v0.40.2', false],
+    ['v0.41.0', false],
+    ['v0.122.1', false],
+    ['v1.0.0', false],
+    ['latest', false],
+  ])('%s -> %s', (version, expected) => {
+    expect(isPreChecksumsVersion(version)).toBe(expected)
+  })
+})
+
+describe('verifyChecksum', () => {
+  const file = path.join(temporaryPath, 'checksum-test')
+  // sha256 of 'updatecli'
+  const checksum =
+    '46d2bc24e680f0dfeaf0bd267cd03f294b2d90e82f5cec487511400c2466d6b4'
+
+  beforeEach(async () => {
+    await fs.writeFile(file, 'updatecli')
+  })
+
+  it('should accept a matching checksum', async () => {
+    await expect(verifyChecksum(file, checksum)).resolves.toBeUndefined()
+  })
+
+  it('should reject a mismatching checksum', async () => {
+    await expect(verifyChecksum(file, '0'.repeat(64))).rejects.toThrow(
+      /^Checksum mismatch/
+    )
+  })
 })
 
 describe('getVersionFromFileContent', () => {
@@ -258,6 +351,6 @@ describe('getUpdatecliVersion', () => {
 })
 
 afterAll(async () => {
-  await fs.rm(temporaryPath, {recursive: true})
-  await fs.rm(cachePath, {recursive: true})
+  await fs.rm(temporaryPath, {recursive: true, force: true})
+  await fs.rm(cachePath, {recursive: true, force: true})
 })
