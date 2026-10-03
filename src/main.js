@@ -1,6 +1,6 @@
-import core from '@actions/core'
-import tool from '@actions/tool-cache'
-import exec from '@actions/exec'
+import * as core from '@actions/core'
+import * as tool from '@actions/tool-cache'
+import * as exec from '@actions/exec'
 import path from 'node:path'
 import fs from 'node:fs'
 

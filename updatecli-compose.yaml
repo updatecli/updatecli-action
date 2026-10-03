@@ -32,6 +32,14 @@ policies:
       groupby: individual
       spec:
         ignoreversionconstraints: true
+        # Bundled in dist/, handled by updatecli/updatecli.d/npm-dist.yaml
+        ignore:
+          - packages:
+              "@actions/core": ""
+              "@actions/exec": ""
+              "@actions/io": ""
+              "@actions/tool-cache": ""
+              "@vercel/ncc": ""
 
   - name: Handle Nodejs version in githubaction
     policy: ghcr.io/updatecli/policies/nodejs/githubaction:0.11.1@sha256:812c245adc1f20767ca912baf3087022c78e8153a3f27d43729dd8931864f8e3
