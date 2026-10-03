@@ -1,0 +1,100 @@
+name: "deps: bump npm packages bundled in dist"
+pipelineid: "npm_dist_dependencies"
+
+# These packages end up in dist/index.js, so bumping them requires rebuilding dist/.
+# The npm autodiscovery policy can't do that, so they are excluded from it in
+# updatecli-compose.yaml and handled here instead.
+
+labels:
+  ecosystem: npm
+  monitor: active
+
+actions:
+  default:
+    kind: "github/pullrequest"
+    spec:
+      title: "deps: bump npm packages bundled in dist"
+      merge:
+        strategy: auto
+      mergemethod: "squash"
+      usetitleforautomerge: true
+      labels:
+        - "dependencies"
+    scmid: "default"
+
+scms:
+  default:
+    kind: "github"
+    spec:
+      branch: "{{ .scm.branch }}"
+      email: "{{ .scm.email }}"
+      owner: "{{ .scm.owner }}"
+      repository: "{{ .scm.repository }}"
+      user: "{{ .scm.user }}"
+      commitusingapi: true
+
+sources:
+  actions-core:
+    name: "Get latest @actions/core version"
+    kind: "npm"
+    spec:
+      name: "@actions/core"
+      versionfilter:
+        kind: "semver"
+  actions-exec:
+    name: "Get latest @actions/exec version"
+    kind: "npm"
+    spec:
+      name: "@actions/exec"
+      versionfilter:
+        kind: "semver"
+  actions-io:
+    name: "Get latest @actions/io version"
+    kind: "npm"
+    spec:
+      name: "@actions/io"
+      versionfilter:
+        kind: "semver"
+  actions-tool-cache:
+    name: "Get latest @actions/tool-cache version"
+    kind: "npm"
+    spec:
+      name: "@actions/tool-cache"
+      versionfilter:
+        kind: "semver"
+  vercel-ncc:
+    name: "Get latest @vercel/ncc version"
+    kind: "npm"
+    spec:
+      name: "@vercel/ncc"
+      versionfilter:
+        kind: "semver"
+
+targets:
+  dist:
+    name: "deps: bump npm packages bundled in dist and rebuild dist"
+    disablesourceinput: true
+    kind: shell
+    scmid: "default"
+    spec:
+      command: |
+        set -e
+        npm ci
+        npm install \
+          @actions/core@^{{ source "actions-core" }} \
+          @actions/exec@^{{ source "actions-exec" }} \
+          @actions/io@^{{ source "actions-io" }} \
+          @actions/tool-cache@^{{ source "actions-tool-cache" }}
+        npm install --save-dev @vercel/ncc@^{{ source "vercel-ncc" }}
+        npm run prepare
+      changedif:
+        kind: file/checksum
+        spec:
+          files:
+            - "package.json"
+            - "package-lock.json"
+            - "dist/index.js"
+            - "dist/index.js.map"
+      environments:
+        - name: "PATH"
+        - name: "HOME"
