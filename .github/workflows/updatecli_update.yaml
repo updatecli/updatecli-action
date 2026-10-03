@@ -29,7 +29,7 @@ jobs:
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@2efa15cbae1751f532f9bfc88f56adafd6d1faed" # v3.8.0
         with:
-          version: "v0.122.0"
+          version: "v0.122.1"
       - name: "Set up Node"
         uses: "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020" # v7.0.0
         with:
