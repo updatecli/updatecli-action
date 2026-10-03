@@ -12,8 +12,8 @@ const FIRST_CHECKSUMS_VERSION = [0, 40, 2]
 
 // get the Updatecli version from the action inputs
 export async function getUpdatecliVersion() {
-  const versionInput = core.getInput('version', {required: false})
-  const versionFile = core.getInput('version-file', {required: false})
+  const versionInput = core.getInput('version', { required: false })
+  const versionFile = core.getInput('version-file', { required: false })
 
   let version = versionInput
   if (!versionInput && !versionFile) {
@@ -40,7 +40,7 @@ export async function updatecliExtract(downloadPath, downloadUrl) {
   throw new Error(`Unsupported archive type: ${downloadUrl}`)
 }
 
-// whether a release predates checksums.txt; unparseable versions are treated
+// whether a release predates checksums.txt; unparsable versions are treated
 // as recent so that a missing checksums.txt fails instead of being skipped
 export function isPreChecksumsVersion(version) {
   const match = /^v?(\d+)\.(\d+)\.(\d+)/.exec(version)
@@ -106,10 +106,10 @@ export async function updatecliDownload(version) {
     throw new Error(`No supported version was found`)
   }
   const updatecliPackages = [
-    {arch: 'x64', platform: 'linux', archive: 'updatecli_Linux_x86_64.tar.gz'},
-    {arch: 'arm64', platform: 'linux', archive: 'updatecli_Linux_arm64.tar.gz'},
-    {arch: 'x64', platform: 'win32', archive: 'updatecli_Windows_x86_64.zip'},
-    {arch: 'arm64', platform: 'win32', archive: 'updatecli_Windows_arm64.zip'},
+    { arch: 'x64', platform: 'linux', archive: 'updatecli_Linux_x86_64.tar.gz' },
+    { arch: 'arm64', platform: 'linux', archive: 'updatecli_Linux_arm64.tar.gz' },
+    { arch: 'x64', platform: 'win32', archive: 'updatecli_Windows_x86_64.zip' },
+    { arch: 'arm64', platform: 'win32', archive: 'updatecli_Windows_arm64.zip' },
     {
       arch: 'x64',
       platform: 'darwin',
