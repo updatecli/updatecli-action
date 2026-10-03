@@ -78,6 +78,7 @@ targets:
     scmid: "default"
     spec:
       command: |
+        set -e
         npm ci
         npm install \
           @actions/core@^{{ source "actions-core" }} \
