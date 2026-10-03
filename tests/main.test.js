@@ -351,6 +351,6 @@ describe('getUpdatecliVersion', () => {
 })
 
 afterAll(async () => {
-  await fs.rm(temporaryPath, {recursive: true})
-  await fs.rm(cachePath, {recursive: true})
+  await fs.rm(temporaryPath, {recursive: true, force: true})
+  await fs.rm(cachePath, {recursive: true, force: true})
 })
