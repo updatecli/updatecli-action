@@ -20,7 +20,7 @@ jobs:
       - name: "Setup updatecli"
         uses: "updatecli/updatecli-action@2efa15cbae1751f532f9bfc88f56adafd6d1faed" # v3.8.0
         with:
-          version: "v0.122.0"
+          version: "v0.122.1"
       - name: "Run updatecli only on Updatecli release event"
         run: updatecli compose apply --clean-git-branches=true --labels="release:updatecli" --experimental
         env:
