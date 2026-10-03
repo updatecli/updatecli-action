@@ -35047,7 +35047,7 @@ async function updatecliExtract(downloadPath, downloadUrl) {
   throw new Error(`Unsupported archive type: ${downloadUrl}`)
 }
 
-// whether a release predates checksums.txt; unparseable versions are treated
+// whether a release predates checksums.txt; unparsable versions are treated
 // as recent so that a missing checksums.txt fails instead of being skipped
 function isPreChecksumsVersion(version) {
   const match = /^v?(\d+)\.(\d+)\.(\d+)/.exec(version)
