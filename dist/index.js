@@ -31249,7 +31249,7 @@ __nccwpck_require__.d(__webpack_exports__, {
   eF: () => (/* binding */ run)
 });
 
-// UNUSED EXPORTS: getUpdatecliVersion, getVersionFromFileContent, updatecliDownload, updatecliExtract, updatecliVersion
+// UNUSED EXPORTS: getExpectedChecksum, getUpdatecliVersion, getVersionFromFileContent, updatecliDownload, updatecliExtract, updatecliVersion, verifyChecksum
 
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
@@ -34096,7 +34096,7 @@ function error(message, properties = {}) {
  * @param properties optional properties to add to the annotation.
  */
 function warning(message, properties = {}) {
-    issueCommand('warning', toCommandProperties(properties), message instanceof Error ? message.toString() : message);
+    command_issueCommand('warning', utils_toCommandProperties(properties), message instanceof Error ? message.toString() : message);
 }
 /**
  * Adds a notice issue
@@ -34806,7 +34806,7 @@ function find(toolName, versionSpec, arch) {
     if (!versionSpec) {
         throw new Error('versionSpec parameter is required');
     }
-    arch = arch || os.arch();
+    arch = arch || external_os_namespaceObject.arch();
     // attempt to resolve an explicit version
     if (!isExplicitVersion(versionSpec)) {
         const localVersions = findAllVersions(toolName, arch);
@@ -34816,15 +34816,15 @@ function find(toolName, versionSpec, arch) {
     // check for the explicit version in the cache
     let toolPath = '';
     if (versionSpec) {
-        versionSpec = semver.clean(versionSpec) || '';
-        const cachePath = path.join(_getCacheDirectory(), toolName, versionSpec, arch);
-        core.debug(`checking cache: ${cachePath}`);
-        if (fs.existsSync(cachePath) && fs.existsSync(`${cachePath}.complete`)) {
-            core.debug(`Found tool in cache ${toolName} ${versionSpec} ${arch}`);
+        versionSpec = node_modules_semver.clean(versionSpec) || '';
+        const cachePath = external_path_namespaceObject.join(_getCacheDirectory(), toolName, versionSpec, arch);
+        core_debug(`checking cache: ${cachePath}`);
+        if (external_fs_namespaceObject.existsSync(cachePath) && external_fs_namespaceObject.existsSync(`${cachePath}.complete`)) {
+            core_debug(`Found tool in cache ${toolName} ${versionSpec} ${arch}`);
             toolPath = cachePath;
         }
         else {
-            core.debug('not found');
+            core_debug('not found');
         }
     }
     return toolPath;
@@ -34837,14 +34837,14 @@ function find(toolName, versionSpec, arch) {
  */
 function findAllVersions(toolName, arch) {
     const versions = [];
-    arch = arch || os.arch();
-    const toolPath = path.join(_getCacheDirectory(), toolName);
-    if (fs.existsSync(toolPath)) {
-        const children = fs.readdirSync(toolPath);
+    arch = arch || external_os_namespaceObject.arch();
+    const toolPath = external_path_namespaceObject.join(_getCacheDirectory(), toolName);
+    if (external_fs_namespaceObject.existsSync(toolPath)) {
+        const children = external_fs_namespaceObject.readdirSync(toolPath);
         for (const child of children) {
             if (isExplicitVersion(child)) {
-                const fullPath = path.join(toolPath, child, arch || '');
-                if (fs.existsSync(fullPath) && fs.existsSync(`${fullPath}.complete`)) {
+                const fullPath = external_path_namespaceObject.join(toolPath, child, arch || '');
+                if (external_fs_namespaceObject.existsSync(fullPath) && external_fs_namespaceObject.existsSync(`${fullPath}.complete`)) {
                     versions.push(child);
                 }
             }
@@ -34928,10 +34928,10 @@ function _completeToolPath(tool, version, arch) {
  * @param versionSpec      version string to check
  */
 function isExplicitVersion(versionSpec) {
-    const c = semver.clean(versionSpec) || '';
-    core.debug(`isExplicit: ${c}`);
-    const valid = semver.valid(c) != null;
-    core.debug(`explicit? ${valid}`);
+    const c = node_modules_semver.clean(versionSpec) || '';
+    core_debug(`isExplicit: ${c}`);
+    const valid = node_modules_semver.valid(c) != null;
+    core_debug(`explicit? ${valid}`);
     return valid;
 }
 /**
@@ -34942,26 +34942,26 @@ function isExplicitVersion(versionSpec) {
  */
 function evaluateVersions(versions, versionSpec) {
     let version = '';
-    core.debug(`evaluating ${versions.length} versions`);
+    core_debug(`evaluating ${versions.length} versions`);
     versions = versions.sort((a, b) => {
-        if (semver.gt(a, b)) {
+        if (node_modules_semver.gt(a, b)) {
             return 1;
         }
         return -1;
     });
     for (let i = versions.length - 1; i >= 0; i--) {
         const potential = versions[i];
-        const satisfied = semver.satisfies(potential, versionSpec);
+        const satisfied = node_modules_semver.satisfies(potential, versionSpec);
         if (satisfied) {
             version = potential;
             break;
         }
     }
     if (version) {
-        core.debug(`matched: ${version}`);
+        core_debug(`matched: ${version}`);
     }
     else {
-        core.debug('match not found');
+        core_debug('match not found');
     }
     return version;
 }
@@ -35002,6 +35002,8 @@ function _unique(values) {
 const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 ;// CONCATENATED MODULE: external "node:fs"
 const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
+// EXTERNAL MODULE: external "node:crypto"
+var external_node_crypto_ = __nccwpck_require__(7598);
 ;// CONCATENATED MODULE: ./src/main.js
 
 
@@ -35009,7 +35011,9 @@ const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import
 
 
 
+
 const DEFAULT_VERSION = `v0.122.1`
+const RELEASE_URL = 'https://github.com/updatecli/updatecli/releases/download'
 
 // get the Updatecli version from the action inputs
 async function getUpdatecliVersion() {
@@ -35034,11 +35038,51 @@ async function getUpdatecliVersion() {
 async function updatecliExtract(downloadPath, downloadUrl) {
   if (downloadUrl.endsWith('.tar.gz')) {
     return extractTar(downloadPath)
-  } else if (downloadUrl.endsWith('.zip')) {
-    return extractZip(downloadPath)
-  } else {
-    throw new Error(`Unsupported archive type: ${downloadUrl}`)
   }
+  if (downloadUrl.endsWith('.zip')) {
+    return extractZip(downloadPath)
+  }
+  throw new Error(`Unsupported archive type: ${downloadUrl}`)
+}
+
+// get the expected sha256 of an archive from the release checksums.txt
+// returns undefined if the release doesn't publish one (versions before ~v0.60.0)
+async function getExpectedChecksum(version, archive) {
+  let checksumsPath
+  try {
+    checksumsPath = await downloadTool(
+      `${RELEASE_URL}/${version}/checksums.txt`
+    )
+  } catch (error) {
+    if (error instanceof HTTPError && error.httpStatusCode === 404) {
+      warning(
+        `No checksums.txt published for Updatecli ${version}, skipping checksum verification`
+      )
+      return
+    }
+    throw error
+  }
+
+  const content = await external_node_fs_namespaceObject.promises.readFile(checksumsPath, 'utf8')
+  for (const line of content.split('\n')) {
+    const [checksum, name] = line.trim().split(/\s+/, 2)
+    // sha256sum prefixes the file name with '*' in binary mode
+    if (name?.replace(/^\*/, '') === archive) {
+      return checksum.toLowerCase()
+    }
+  }
+  throw new Error(`No checksum found for ${archive} in checksums.txt`)
+}
+
+async function verifyChecksum(filePath, expected) {
+  const content = await external_node_fs_namespaceObject.promises.readFile(filePath)
+  const actual = external_node_crypto_.createHash('sha256').update(content).digest('hex')
+  if (actual !== expected) {
+    throw new Error(
+      `Checksum mismatch for ${filePath}: expected ${expected}, got ${actual}`
+    )
+  }
+  info(`Checksum verified: ${actual}`)
 }
 
 // download Updatecli retrieve updatecli binary from Github Release
@@ -35047,35 +35091,19 @@ async function updatecliDownload(version) {
     throw new Error(`No supported version was found`)
   }
   const updatecliPackages = [
-    {
-      arch: 'x64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_x86_64.tar.gz`,
-    },
-    {
-      arch: 'arm64',
-      platform: 'linux',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Linux_arm64.tar.gz`,
-    },
-    {
-      arch: 'x64',
-      platform: 'win32',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Windows_x86_64.zip`,
-    },
-    {
-      arch: 'arm64',
-      platform: 'win32',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Windows_arm64.zip`,
-    },
+    {arch: 'x64', platform: 'linux', archive: 'updatecli_Linux_x86_64.tar.gz'},
+    {arch: 'arm64', platform: 'linux', archive: 'updatecli_Linux_arm64.tar.gz'},
+    {arch: 'x64', platform: 'win32', archive: 'updatecli_Windows_x86_64.zip'},
+    {arch: 'arm64', platform: 'win32', archive: 'updatecli_Windows_arm64.zip'},
     {
       arch: 'x64',
       platform: 'darwin',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Darwin_x86_64.tar.gz`,
+      archive: 'updatecli_Darwin_x86_64.tar.gz',
     },
     {
       arch: 'arm64',
       platform: 'darwin',
-      url: `https://github.com/updatecli/updatecli/releases/download/${version}/updatecli_Darwin_arm64.tar.gz`,
+      archive: 'updatecli_Darwin_arm64.tar.gz',
     },
   ]
 
@@ -35088,15 +35116,37 @@ async function updatecliDownload(version) {
     )
   }
 
-  info(`Downloading ${updatecliPackage.url}`)
-  const downloadPath = await downloadTool(updatecliPackage.url)
+  const cachedTool = find('updatecli', version, process.arch)
+  if (cachedTool) {
+    info(`Found Updatecli ${version} in the tool cache: ${cachedTool}`)
+    addPath(cachedTool)
+    return
+  }
+
+  const url = `${RELEASE_URL}/${version}/${updatecliPackage.archive}`
+  info(`Downloading ${url}`)
+  const downloadPath = await downloadTool(url)
+
+  const expectedChecksum = await getExpectedChecksum(
+    version,
+    updatecliPackage.archive
+  )
+  if (expectedChecksum) {
+    await verifyChecksum(downloadPath, expectedChecksum)
+  }
 
   core_debug(`Extracting file ${downloadPath} ...`)
-  const updatecliExtractedFolder = await updatecliExtract(
-    downloadPath,
-    updatecliPackage.url
-  )
+  const updatecliExtractedFolder = await updatecliExtract(downloadPath, url)
   core_debug(`Extracted file to ${updatecliExtractedFolder} ...`)
+
+  // chmod before caching: cacheDir marks the entry complete, and a cached
+  // entry is reused as-is by tool.find on later runs
+  if (process.platform == 'linux' || process.platform == 'darwin') {
+    await exec_exec('chmod', [
+      '+x',
+      external_node_path_namespaceObject.join(updatecliExtractedFolder, 'updatecli'),
+    ])
+  }
 
   core_debug('Adding to the cache ...')
   const cachedPath = await cacheDir(
@@ -35105,10 +35155,6 @@ async function updatecliDownload(version) {
     version,
     process.arch
   )
-
-  if (process.platform == 'linux' || process.platform == 'darwin') {
-    await exec_exec('chmod', ['+x', external_node_path_namespaceObject.join(cachedPath, 'updatecli')])
-  }
 
   addPath(cachedPath)
 

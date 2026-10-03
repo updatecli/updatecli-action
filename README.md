@@ -19,6 +19,10 @@ Install Updatecli for GitHub Action
 
 - `version-file`: The path to a file containing updatecli version. Supported file types are `.updatecli-version` and `.tool-versions`. See more details in [about version-file](#Updatecli-version-file).
 
+The downloaded archive is verified against the `checksums.txt` published with the Updatecli release, and the step fails on a mismatch.
+Releases older than v0.60.0 don't publish that file, so verification is skipped with a warning.
+If the requested version is already in the runner tool cache, for example on a self-hosted runner, it is reused instead of being downloaded again.
+
 Please check whether you need to allow Github Action tokens to create pull
 requests in the repository settings in addition to granting write permissions in
 the workflow. This is [required by GitHub in new repositories](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#preventing-github-actions-from-creating-or-approving-pull-requests).
