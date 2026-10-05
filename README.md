@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: Install Updatecli in the runner
-        uses: updatecli/updatecli-action@v3.8.0
+        uses: updatecli/updatecli-action@v3.9.0
 
       - name: Run Updatecli in Dry Run mode
         run: updatecli pipeline diff --config updatecli/updatecli.d
