@@ -5,7 +5,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import crypto from 'node:crypto'
 
-const DEFAULT_VERSION = `v0.122.1`
+const DEFAULT_VERSION = `v0.123.0`
 const RELEASE_URL = 'https://github.com/updatecli/updatecli/releases/download'
 // first Updatecli release publishing a checksums.txt
 const FIRST_CHECKSUMS_VERSION = [0, 40, 2]
