@@ -26,7 +26,7 @@ policies:
           monitor: active
 
   - name: NPM autodiscovery
-    policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.12.1@sha256:ab02848169d584d7510ab974ec4a27309d9737068b1d888df6a8388a3dad26fc
+    policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.13.0@sha256:a6ae41383d6e0ebd8a139b44f441134b9a6e881aa30393e1298529d73df27d83
     valuesinline:
       automerge: true
       groupby: individual
