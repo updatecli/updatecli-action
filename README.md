@@ -227,7 +227,7 @@ valuesinline:
 
 policies:
   - name: Update Updatecli GitHub action version
-    policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.9.1
+    policy: ghcr.io/updatecli/policies/updatecli/githubaction:0.10.0
 ```
 
 ## License
