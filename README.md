@@ -119,9 +119,9 @@ From the root of your repository:
 export GITHUB_TOKEN=<PAT with the repo and workflow scopes>
 
 # To show what would be created
-updatecli diff ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.1.1
+updatecli diff ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.2.0
 # To apply the changes if you are happy with the diff
-updatecli apply ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.1.1
+updatecli apply ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.2.0
 ```
 
 Run that way the policy uses its default `scm.enabled: false`: the workflows are written to your
@@ -162,7 +162,7 @@ policies:
 
   - name: Configure Updatecli workflows
     id: updatecli
-    policy: ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.1.1
+    policy: ghcr.io/updatecli/policies/updatecli/githubaction/scaffold:0.2.0
     valuesinline:
       gha:
         # Credentials referenced by the generated workflows
