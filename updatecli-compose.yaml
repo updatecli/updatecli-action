@@ -41,6 +41,22 @@ policies:
               "@actions/tool-cache": ""
               "@vercel/ncc": ""
 
+  - name: NPM vulnerability
+    id: npm_vulnerability
+    policy: ghcr.io/updatecli/policies/npm/autodiscovery:0.13.0@sha256:a6ae41383d6e0ebd8a139b44f441134b9a6e881aa30393e1298529d73df27d83
+    valuesinline:
+      pipelineid: "npm/vulnerability"
+      groupby: individual
+      spec:
+        vulnerability:
+          minseverity: "high"
+      pipeline:
+        labels:
+          ecosystem: npm
+          policy: autodiscovery
+          vulnerability: minhigh
+          monitor: active
+
   - name: Handle Nodejs version in githubaction
     policy: ghcr.io/updatecli/policies/nodejs/githubaction:0.12.0@sha256:9bd7725a2f31dc104bb8086458febb7fce9d66347dff560ba3d45053d97d9b19
     valuesinline:
